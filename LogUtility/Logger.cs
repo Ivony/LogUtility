@@ -9,6 +9,11 @@ namespace LogUtility
   public class Logger
   {
 
+    public Logger( ILogWriter writer = null, IFormatProvider formatProvider = null, IObjectConverter converter = null, Logger pipeLogger = null )
+    { 
+    
+    }
+
 
     public object Log( object obj )
     {
@@ -33,7 +38,7 @@ namespace LogUtility
       try
       {
         var message = Format( converted, null );
-        Writer.Write( message );
+        Writer.Write( message, Scope );
       }
       catch ( Exception e )
       {
@@ -58,6 +63,11 @@ namespace LogUtility
       return obj.ToString();
     }
 
+    public LogScope Scope
+    {
+      get;
+      private set;
+    }
 
     public Logger PipeLogger
     {
