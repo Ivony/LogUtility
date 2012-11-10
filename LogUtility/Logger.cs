@@ -28,7 +28,7 @@ namespace LogUtility
     }
 
 
-    private object LogInternal( object obj )
+    protected virtual object LogInternal( object obj )
     {
       var converted = Converter.Convert( obj );
 
