@@ -40,9 +40,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DefaultWriter.cs" />
-    <Compile Include="ILogFormatter.cs" />
     <Compile Include="ILogWriter.cs" />
+    <Compile Include="ILogWriterProvider.cs" />
     <Compile Include="IObjectConverter.cs" />
+    <Compile Include="JsonFormatter.cs" />
     <Compile Include="Logger.cs" />
     <Compile Include="LogScope.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

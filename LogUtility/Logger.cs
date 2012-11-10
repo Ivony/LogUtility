@@ -10,8 +10,8 @@ namespace LogUtility
   {
 
     public Logger( ILogWriter writer = null, IFormatProvider formatProvider = null, IObjectConverter converter = null, Logger pipeLogger = null )
-    { 
-    
+    {
+
     }
 
 
@@ -38,7 +38,8 @@ namespace LogUtility
       try
       {
         var message = Format( converted, null );
-        Writer.Write( message, Scope );
+        var writer = GetWriter( converted );
+        writer.Write( message, Scope );
       }
       catch ( Exception e )
       {
@@ -46,6 +47,11 @@ namespace LogUtility
       }
 
       return converted;
+    }
+
+    protected ILogWriter GetWriter( object obj )
+    {
+      return WriterProvider.GetWriter( obj, Scope );
     }
 
     private string Format( object obj, string format )
@@ -81,7 +87,7 @@ namespace LogUtility
       private set;
     }
 
-    public ILogWriter Writer
+    public ILogWriterProvider WriterProvider
     {
       get;
       private set;
