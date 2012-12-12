@@ -9,14 +9,14 @@ namespace LogUtility
   public class TextLogger : ILogger
   {
 
-    protected TextLogger( ILogWriter writer, IFormatProvider formatProvider = null, ILogger pipedLogger = null )
+    public TextLogger( ILogWriter writer, IFormatProvider formatProvider = null, ILogger pipedLogger = null )
     {
       _writer = writer;
       FormatProvider = formatProvider;
       PipedLogger = pipedLogger;
     }
 
-    protected TextLogger( ILogWriterProvider writerProvider, IFormatProvider formatProvider = null, ILogger pipedLogger = null )
+    public TextLogger( ILogWriterProvider writerProvider, IFormatProvider formatProvider = null, ILogger pipedLogger = null )
     {
       _writerProvider = writerProvider;
       FormatProvider = formatProvider;
