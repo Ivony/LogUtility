@@ -7,18 +7,6 @@ namespace LogUtility
 {
   public interface ILogWriter
   {
-    public string Write( string message, LogScope scope );
+    public void Write( LogEntry entry );
   }
-
-
-  public class ConsoleLogWriter : ILogWriter
-  {
-
-    public string Write( string message, LogScope scope )
-    {
-      Console.WriteLine( message );
-      return message;
-    }
-  }
-
 }

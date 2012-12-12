@@ -5,7 +5,26 @@ using System.Text;
 
 namespace LogUtility
 {
-  class LogScope
+  public class LogScope
   {
+    public LogScope( string name ) : this( name, null ) { }
+
+    public LogScope( string name, LogScope parent )
+    {
+      Name = name;
+      ParentScope = parent;
+    }
+
+    public LogScope ParentScope
+    {
+      get;
+      private set;
+    }
+
+    public string Name
+    {
+      get;
+      private set;
+    }
   }
 }

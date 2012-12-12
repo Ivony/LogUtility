@@ -6,10 +6,11 @@ using System.Threading.Tasks;
 
 namespace LogUtility
 {
-  public interface ILogWriterProvider
+  public class ConsoleLogWriter : ILogWriter
   {
-
-    ILogWriter GetWriter( LogEntry entry );
-
+    public void Write( LogEntry entry )
+    {
+      Console.WriteLine( entry.Message );
+    }
   }
 }
