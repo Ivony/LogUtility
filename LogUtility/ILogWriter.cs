@@ -7,6 +7,6 @@ namespace LogUtility
 {
   public interface ILogWriter
   {
-    public void Write( LogEntry entry );
+    void Write( LogEntry entry );
   }
 }
