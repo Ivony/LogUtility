@@ -10,11 +10,7 @@ namespace LogUtility
   {
 
     public TextLogger( ILogWriter writer, IFormatProvider formatProvider = null, ILogger pipedLogger = null )
-    {
-      _writer = writer;
-      FormatProvider = formatProvider;
-      PipedLogger = pipedLogger;
-    }
+      : this( new LogWriterProvider( writer ), formatProvider, pipedLogger ) { }
 
     public TextLogger( ILogWriterProvider writerProvider, IFormatProvider formatProvider = null, ILogger pipedLogger = null )
     {
@@ -52,17 +48,27 @@ namespace LogUtility
 
     private ILogWriter GetWriter( LogEntry entry )
     {
-      if ( _writerProvider != null )
-        return _writerProvider.GetWriter( entry );
-
-      else if ( _writer != null )
-        return _writer;
-      
-      throw new InvalidOperationException();
+      return _writerProvider.GetWriter( entry );
     }
 
-    private ILogWriter _writer;
     private ILogWriterProvider _writerProvider;
+
+
+    private class LogWriterProvider : ILogWriterProvider
+    {
+
+      private ILogWriter _writer;
+
+      public LogWriterProvider( ILogWriter writer )
+      {
+        _writer = writer;
+      }
+
+      public ILogWriter GetWriter( LogEntry entry )
+      {
+        return _writer;
+      }
+    }
 
 
     /// <summary>
