@@ -25,7 +25,6 @@ namespace LogUtility
     {
       var entry = CreateEntry( message );
 
-      PipedLogger.WriteLog( entry );
       WriteLog( entry );
     }
 
@@ -78,5 +77,10 @@ namespace LogUtility
       private set;
     }
 
+
+    void ILogger.WriteLog( LogEntry entry )
+    {
+      WriteLog( entry );
+    }
   }
 }
