@@ -5,7 +5,7 @@ using System.Text;
 
 namespace LogUtility
 {
-  public interface ILogWriter
+  public interface ILogWriter : IDisposable
   {
     void Write( LogEntry entry );
   }

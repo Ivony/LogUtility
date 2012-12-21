@@ -1,20 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace LogUtility
 {
-  public class TextLogger : ILogger
+  public abstract class TextLogger : ILogger
   {
 
-    public TextLogger( ILogWriter writer, IFormatProvider formatProvider = null, ILogger pipedLogger = null )
-      : this( new LogWriterProvider( writer ), formatProvider, pipedLogger ) { }
-
-    public TextLogger( ILogWriterProvider writerProvider, IFormatProvider formatProvider = null, ILogger pipedLogger = null )
+    public TextLogger( IFormatProvider formatProvider = null, ILogger pipedLogger = null )
     {
-      _writerProvider = writerProvider;
       FormatProvider = formatProvider;
       PipedLogger = pipedLogger;
     }
@@ -27,8 +24,9 @@ namespace LogUtility
     public void WriteLog( string message )
     {
       var entry = CreateEntry( message );
-      WriteLog( entry );
 
+      PipedLogger.WriteLog( entry );
+      WriteLog( entry );
     }
 
     protected virtual LogEntry CreateEntry( string message )
@@ -42,33 +40,18 @@ namespace LogUtility
       if ( PipedLogger != null )
         PipedLogger.WriteLog( entry );
 
-      var writer = GetWriter( entry );
-      writer.Write( entry );
-    }
-
-    private ILogWriter GetWriter( LogEntry entry )
-    {
-      return _writerProvider.GetWriter( entry );
-    }
-
-    private ILogWriterProvider _writerProvider;
-
-
-    private class LogWriterProvider : ILogWriterProvider
-    {
-
-      private ILogWriter _writer;
-
-      public LogWriterProvider( ILogWriter writer )
+      using ( var writer = GetWriter( entry ) )
       {
-        _writer = writer;
-      }
-
-      public ILogWriter GetWriter( LogEntry entry )
-      {
-        return _writer;
+        writer.Write( entry );
       }
     }
+
+    protected ILogWriter GetWriter( LogEntry entry )
+    {
+      return new TextLogWriter( GetTextWriter( entry ) );
+    }
+
+    protected abstract TextWriter GetTextWriter( LogEntry entry );
 
 
     /// <summary>
@@ -95,12 +78,5 @@ namespace LogUtility
       private set;
     }
 
-
-
-
-    void ILogger.WriteLog( LogEntry entry )
-    {
-      WriteLog( entry );
-    }
   }
 }

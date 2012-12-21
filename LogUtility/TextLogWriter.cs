@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace LogUtility
 {
-  public class TextLogWriter : ILogWriter
+  public class TextLogWriter : ILogWriter, IDisposable
   {
 
     private TextWriter _writer;
@@ -24,6 +24,11 @@ namespace LogUtility
     public void Write( LogEntry entry )
     {
       _writer.WriteLine( entry.Message );
+    }
+
+    public void Dispose()
+    {
+      _writer.Dispose();
     }
   }
 }
