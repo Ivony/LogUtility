@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -7,18 +8,20 @@ using System.Threading.Tasks;
 
 namespace LogUtility
 {
+
+
   public abstract class TextLogger : ILogger
   {
 
     public TextLogger( IFormatProvider formatProvider = null, ILogger pipedLogger = null )
     {
-      FormatProvider = formatProvider;
+      FormatProvider = formatProvider ?? CultureInfo.InvariantCulture;
       PipedLogger = pipedLogger;
     }
 
     public void WriteLog( string format, params object[] args )
     {
-      WriteLog( string.Format( format, args ) );
+      WriteLog( string.Format( FormatProvider, format, args ) );
     }
 
     public void WriteLog( string message )

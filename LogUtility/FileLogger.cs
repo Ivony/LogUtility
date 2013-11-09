@@ -6,6 +6,10 @@ using System.Text;
 
 namespace LogUtility
 {
+
+  /// <summary>
+  /// 文件日志记录器
+  /// </summary>
   public class FileLogger : TextLogger
   {
 
@@ -24,6 +28,11 @@ namespace LogUtility
     }
 
 
+    /// <summary>
+    /// 派生类重写此方法获取文本编写器，默认返回
+    /// </summary>
+    /// <param name="entry"></param>
+    /// <returns></returns>
     protected override TextWriter GetTextWriter( LogEntry entry )
     {
       return GetWriter( _filepath );
