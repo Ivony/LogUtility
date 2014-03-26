@@ -10,10 +10,18 @@ namespace LogUtility
 {
 
 
+  /// <summary>
+  /// 文本日志记录器基类，将日志信息以文本形式记录的所有记录器的基类
+  /// </summary>
   public abstract class TextLogger : ILogger
   {
 
-    public TextLogger( IFormatProvider formatProvider = null, ILogger pipedLogger = null )
+    /// <summary>
+    /// 创建 TextLogger 对象
+    /// </summary>
+    /// <param name="formatProvider">格式化控制对象提供程序</param>
+    /// <param name="pipedLogger">日志管道中的下级日志记录器</param>
+    protected TextLogger( IFormatProvider formatProvider = null, ILogger pipedLogger = null )
     {
       FormatProvider = formatProvider ?? CultureInfo.InvariantCulture;
       PipedLogger = pipedLogger;

@@ -28,18 +28,28 @@ namespace LogUtility
     }
 
 
+
+    /// <summary>
+    /// 获取日志产生的时间，该时间以 UTC 时间表示
+    /// </summary>
     public DateTime LogDate
     {
       get;
       private set;
     }
 
+    /// <summary>
+    /// 获取日志所属的范畴，范畴可以表示日志类型或是来源
+    /// </summary>
     public LogScope Scope
     {
       get;
       private set;
     }
 
+    /// <summary>
+    /// 日志消息
+    /// </summary>
     public string Message
     {
       get;

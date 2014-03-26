@@ -29,12 +29,20 @@ namespace LogUtility
       ParentScope = parent;
     }
 
+
+    /// <summary>
+    /// 获取父级范畴
+    /// </summary>
     public LogScope ParentScope
     {
       get;
       private set;
     }
 
+
+    /// <summary>
+    /// 范畴名称
+    /// </summary>
     public string Name
     {
       get;
