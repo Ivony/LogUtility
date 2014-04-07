@@ -47,7 +47,10 @@
     <Compile Include="ILogWriter.cs" />
     <Compile Include="ILogWriterProvider.cs" />
     <Compile Include="LogEntry.cs" />
+    <Compile Include="LogExtensions.cs" />
+    <Compile Include="Logger.cs" />
     <Compile Include="LogMeta.cs" />
+    <Compile Include="LogScope.cs" />
     <Compile Include="LogSource.cs" />
     <Compile Include="LogType.cs" />
     <Compile Include="MulticastLogger.cs" />

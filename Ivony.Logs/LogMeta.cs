@@ -5,15 +5,21 @@ using System.Text;
 
 namespace Ivony.Logs
 {
-  
+
   /// <summary>
   /// 定义日志元数据
   /// </summary>
   public class LogMeta
   {
 
+    /// <summary>
+    /// 日志来源
+    /// </summary>
     public LogSource Source { get; set; }
 
+    /// <summary>
+    /// 日志类型
+    /// </summary>
     public LogType Type { get; set; }
 
 
