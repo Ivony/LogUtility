@@ -16,22 +16,14 @@ namespace Ivony.Logs
   public abstract class TextLogger : Logger
   {
 
+    /// <summary>
+    /// 写入一条日志信息
+    /// </summary>
+    /// <param name="entry"></param>
     protected override void WriteLog( LogEntry entry )
     {
-      var writer = GetTextWriter( entry );
-
-      try
-      {
-        Write( writer, entry );
-      }
-      finally
-      {
-
-        ReleaseWriter( writer );
-      }
+      Write( entry, GetPadding( entry ), entry.Message );
     }
-
-    protected abstract TextWriter GetTextWriter( LogEntry entry );
 
 
     protected virtual void ReleaseWriter( TextWriter writer )
@@ -41,49 +33,48 @@ namespace Ivony.Logs
 
 
 
-    private object _sync = new object();
 
     /// <summary>
-    /// 获取用于同步的对象
+    /// 派生类实现此方法写入日志
     /// </summary>
-    protected object SyncRoot
-    {
-      get { return _sync; }
-    }
+    /// <param name="contents">日志内容行</param>
+    protected abstract void WriteLogeMessage( LogEntry entry, string[] contents );
 
 
 
-    /// <summary>
-    /// 写入一条日志信息
-    /// </summary>
-    /// <param name="entry"></param>
-    public void Write( TextWriter writer, LogEntry entry )
-    {
-      Write( writer, GetPadding( entry ), entry.Message );
-    }
+
+
 
     /// <summary>
     /// 使用指定的前缀写入多行日志
     /// </summary>
     /// <param name="padding">填充字符串，将会添加在每一行日志的前面</param>
     /// <param name="message">日志消息</param>
-    protected virtual void Write( TextWriter writer, string padding, string message )
+    protected virtual void Write( LogEntry entry, string padding, string message )
     {
+
 
       var messageLines = SplitMultiLine( message );
 
-      lock ( SyncRoot )//确保所有的行会一起写入，不至于中途插入别的行
+
+
+      if ( messageLines.Length == 1 )
       {
-        foreach ( var line in messageLines )
-        {
-          writer.WriteLine( padding + line );
-        }
+        WriteLogeMessage( entry, new[] { padding + " " + messageLines[0] } );
+        return;
+      }
 
+      for ( int i = 0; i < messageLines.Length; i++ )
+      {
+        if ( i == 0 )
+          messageLines[i] = padding + "/" + messageLines[i];
+        else if ( i == messageLines.Length - 1 )
+          messageLines[i] = padding + "\\" + messageLines[i];
+        else
+          messageLines[i] = padding + "|" + messageLines[i];
+      }
 
-        if ( messageLines.Length > 1 )
-          writer.WriteLine();//写入一个空行表示多行日志记录结束。
-      };
-
+      WriteLogeMessage( entry, messageLines );
     }
 
 

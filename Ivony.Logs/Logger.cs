@@ -23,10 +23,13 @@ namespace Ivony.Logs
     /// 记录一条日志
     /// </summary>
     /// <param name="entry">要记录的日志条目</param>
-    public void LogEntry( LogEntry entry )
+    public virtual void LogEntry( LogEntry entry )
     {
-      if ( Filter != null && Filter.Writable( entry ) )
-        WriteLog( entry );
+      lock ( SyncRoot )
+      {
+        if ( Filter == null || Filter.Writable( entry ) )
+          WriteLog( entry );
+      }
     }
 
     /// <summary>
@@ -42,6 +45,18 @@ namespace Ivony.Logs
     public static Logger operator +( Logger logger1, Logger logger2 )
     {
       return new MulticastLogger( logger1, logger2 );
+    }
+
+
+
+    private object _sync = new object();
+
+    /// <summary>
+    /// 获取用于同步的对象
+    /// </summary>
+    public object SyncRoot
+    {
+      get { return _sync; }
     }
 
 

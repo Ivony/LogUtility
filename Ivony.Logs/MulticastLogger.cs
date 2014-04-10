@@ -15,7 +15,7 @@ namespace Ivony.Logs
 
 
 
-    public MulticastLogger( params Logger[] loggers ) : this( false, loggers ) { }
+    public MulticastLogger( params Logger[] loggers ) : this( true, loggers ) { }
 
     public MulticastLogger( bool throwExceptions, params Logger[] loggers )
     {

@@ -22,14 +22,16 @@ namespace Ivony.Logs
     /// <param name="pipedLogger">管道日志记录器</param>
     public ConsoleLogger() : base() { }
 
-    protected override TextWriter GetTextWriter( LogEntry entry )
-    {
-      return Console.Out;
-    }
 
-    protected override void ReleaseWriter( TextWriter writer )
+    private static object _sync = new object();
+
+    protected override void WriteLogeMessage( LogEntry entry, string[] contents )
     {
-      writer.Flush();
+      lock ( _sync )
+      {
+        foreach ( var line in contents )
+          Console.WriteLine( line );
+      }
     }
 
   }
