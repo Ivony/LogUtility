@@ -10,20 +10,20 @@ namespace Ivony.Logs
   /// <summary>
   /// 多播日志记录器
   /// </summary>
-  public class MulticastLogger : ILogger
+  public class MulticastLogger : Logger
   {
 
 
 
-    public MulticastLogger( params ILogger[] loggers ) : this( false, loggers ) { }
+    public MulticastLogger( params Logger[] loggers ) : this( false, loggers ) { }
 
-    public MulticastLogger( bool throwExceptions, params ILogger[] loggers )
+    public MulticastLogger( bool throwExceptions, params Logger[] loggers )
     {
       ThrowExceptions = throwExceptions;
-      Loggers = new ReadOnlyCollection<ILogger>( loggers.SelectMany( ExpandMulticast ).ToArray() );
+      Loggers = new ReadOnlyCollection<Logger>( loggers.SelectMany( ExpandMulticast ).ToArray() );
     }
 
-    private IEnumerable<ILogger> ExpandMulticast( ILogger logger )
+    private IEnumerable<Logger> ExpandMulticast( Logger logger )
     {
       var multi = logger as MulticastLogger;
       if ( multi != null )
@@ -34,25 +34,18 @@ namespace Ivony.Logs
     }
 
 
-    public ICollection<ILogger> Loggers { get; private set; }
+    public ICollection<Logger> Loggers { get; private set; }
 
     public bool ThrowExceptions { get; private set; }
 
 
 
 
-    /*
-    public static ILogger operator +( ILogger logger1, ILogger logger2 )
-    {
-      return new MulticastLogger( logger1, logger2 );
-    }
-    */
-
     /// <summary>
     /// 对所有的日志记录器同时写入日志条目
     /// </summary>
     /// <param name="entry">要记录的日志条目</param>
-    public void WriteLog( LogEntry entry )
+    public override void WriteLog( LogEntry entry )
     {
 
       List<Exception> exceptions = new List<Exception>();

@@ -43,7 +43,6 @@
     <Compile Include="ConsoleLogger.cs" />
     <Compile Include="FileLogger.cs" />
     <Compile Include="ILogFilter.cs" />
-    <Compile Include="ILogger.cs" />
     <Compile Include="ILogWriter.cs" />
     <Compile Include="ILogWriterProvider.cs" />
     <Compile Include="LogEntry.cs" />

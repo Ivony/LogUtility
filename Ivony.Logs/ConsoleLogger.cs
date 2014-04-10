@@ -20,11 +20,16 @@ namespace Ivony.Logs
     /// </summary>
     /// <param name="formatProvider">格式化提供程序</param>
     /// <param name="pipedLogger">管道日志记录器</param>
-    public ConsoleLogger( IFormatProvider formatProvider = null ) : base( formatProvider ) { }
+    public ConsoleLogger() : base() { }
 
     protected override TextWriter GetTextWriter( LogEntry entry )
     {
       return Console.Out;
+    }
+
+    protected override void ReleaseWriter( TextWriter writer )
+    {
+      writer.Flush();
     }
 
   }

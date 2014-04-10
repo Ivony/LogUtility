@@ -11,7 +11,7 @@ namespace Ivony.Logs.Test
     {
 
 
-      var logger = new ConsoleLogger();
+      var logger = new ConsoleLogger() + new FileLogger( @"C:\Temp\Logs" );
 
       logger.LogInfo( "Hello World!" );
 

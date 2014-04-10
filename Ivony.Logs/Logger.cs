@@ -5,25 +5,17 @@ using System.Text;
 
 namespace Ivony.Logs
 {
-  public abstract class Logger : ILogger
+  public abstract class Logger
   {
 
-    protected abstract ILogFilter LogFilter { get; }
-    protected abstract ILogWriterProvider LogWriterProvider { get; }
+    public abstract void WriteLog( LogEntry entry );
 
-    public void WriteLog( LogEntry entry )
+
+    public static Logger operator +( Logger logger1, Logger logger2 )
     {
-
-      if ( LogWriterProvider == null )
-        throw new InvalidOperationException();
-
-      if ( LogFilter == null || LogFilter.Writable( entry ) )
-      {
-
-        var writer = LogWriterProvider.GetWriter( entry );
-
-        writer.Write( entry );
-      }
+      return new MulticastLogger( logger1, logger2 );
     }
+
+
   }
 }

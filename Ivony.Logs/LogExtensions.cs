@@ -15,7 +15,7 @@ namespace Ivony.Logs
     /// <param name="logger">日志记录器</param>
     /// <param name="message">日志消息</param>
     /// <param name="args">日志消息参数</param>
-    public static void LogInfo( this ILogger logger, string message, params object[] args )
+    public static void LogInfo( this Logger logger, string message, params object[] args )
     {
       LogWithCustomType( logger, LogType.Info, message, args );
     }
@@ -26,7 +26,7 @@ namespace Ivony.Logs
     /// <param name="logger">日志记录器</param>
     /// <param name="message">日志消息</param>
     /// <param name="args">日志消息参数</param>
-    public static void LogWarning( this ILogger logger, string message, params object[] args )
+    public static void LogWarning( this Logger logger, string message, params object[] args )
     {
       LogWithCustomType( logger, LogType.Warning, message, args );
     }
@@ -38,7 +38,7 @@ namespace Ivony.Logs
     /// <param name="logger">日志记录器</param>
     /// <param name="message">日志消息</param>
     /// <param name="args">日志消息参数</param>
-    public static void LogError( this ILogger logger, string message, params object[] args )
+    public static void LogError( this Logger logger, string message, params object[] args )
     {
       LogWithCustomType( logger, LogType.Error, message, args );
     }
@@ -50,7 +50,7 @@ namespace Ivony.Logs
     /// <param name="logger">日志记录器</param>
     /// <param name="message">日志消息</param>
     /// <param name="args">日志消息参数</param>
-    public static void LogException( this ILogger logger, Exception exception )
+    public static void LogException( this Logger logger, Exception exception )
     {
       LogWithCustomType( logger, LogType.Exception, exception.ToString() );
     }
@@ -62,7 +62,7 @@ namespace Ivony.Logs
     /// <param name="logger">日志记录器</param>
     /// <param name="message">日志消息</param>
     /// <param name="args">日志消息参数</param>
-    public static void LogFatalError( this ILogger logger, string message, params object[] args )
+    public static void LogFatalError( this Logger logger, string message, params object[] args )
     {
       LogWithCustomType( logger, LogType.FatalError, message, args );
     }
@@ -74,14 +74,14 @@ namespace Ivony.Logs
     /// <param name="logger">日志记录器</param>
     /// <param name="message">日志消息</param>
     /// <param name="args">日志消息参数</param>
-    public static void LogCrashError( this ILogger logger, string message, params object[] args )
+    public static void LogCrashError( this Logger logger, string message, params object[] args )
     {
       LogWithCustomType( logger, LogType.CrashError, message, args );
     }
 
 
 
-    private static void LogWithCustomType( ILogger logger, LogType type, string message, params object[] args )
+    private static void LogWithCustomType( Logger logger, LogType type, string message, params object[] args )
     {
       var meta = LogMeta.Blank;
       meta.Type = type;
