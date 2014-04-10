@@ -16,12 +16,7 @@ namespace Ivony.Logs
   public abstract class TextLogger : Logger
   {
 
-    protected TextLogger()
-    {
-    }
-
-
-    public override void WriteLog( LogEntry entry )
+    protected override void WriteLog( LogEntry entry )
     {
       var writer = GetTextWriter( entry );
 

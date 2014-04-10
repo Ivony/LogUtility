@@ -89,7 +89,7 @@ namespace Ivony.Logs
       if ( args.Any() )
         message = string.Format( message, args );
 
-      logger.WriteLog( new LogEntry( message, meta ) );
+      logger.LogEntry( new LogEntry( message, meta ) );
     }
 
   }
