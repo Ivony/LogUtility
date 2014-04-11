@@ -47,6 +47,21 @@ namespace Ivony.Logs
 
 
 
+
+
+    public static bool operator ==( LogType type1, LogType type2 )
+    {
+      return type1.Guid.Equals( type2.Guid );
+    }
+
+
+    public static bool operator !=( LogType type1, LogType type2 )
+    {
+      return !type1.Guid.Equals( type2.Guid );
+    }
+
+
+
     private class BuiltInLogType : LogType
     {
       public BuiltInLogType( string name, int servertity, Guid guid )
