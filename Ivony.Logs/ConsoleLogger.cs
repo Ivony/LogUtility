@@ -18,9 +18,8 @@ namespace Ivony.Logs
     /// <summary>
     /// 创建 ConsoleLogger 实例
     /// </summary>
-    /// <param name="formatProvider">格式化提供程序</param>
-    /// <param name="pipedLogger">管道日志记录器</param>
-    public ConsoleLogger() : base() { }
+    /// <param name="filter">日志筛选器，确定哪些日志需要被记录</param>
+    public ConsoleLogger( ILogFilter filter = null ) : base( filter ) { }
 
 
     private static object _sync = new object();

@@ -14,9 +14,25 @@ namespace Ivony.Logs
   {
 
 
+
+    protected FileLoggerBase( ILogFilter filter = null, Encoding encoding = null )
+      : base( filter )
+    {
+      _encoding = encoding ?? Encoding.UTF8;
+    }
+
     protected abstract string GetFilepath( LogEntry entry );
 
-    public abstract Encoding Encoding { get; }
+
+    private Encoding _encoding;
+
+    /// <summary>
+    /// 获取写入文件所用的编码
+    /// </summary>
+    protected virtual Encoding Encoding
+    {
+      get { return _encoding; }
+    }
 
 
 

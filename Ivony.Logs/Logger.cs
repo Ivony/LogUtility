@@ -9,13 +9,22 @@ namespace Ivony.Logs
   {
 
 
+    private ILogFilter _filter;
+
+    protected Logger() : this( null ) { }
+
+    protected Logger( ILogFilter filter )
+    {
+      _filter = filter;
+    }
+
 
     /// <summary>
     /// 用于筛选要记录的日志条目的日志筛选器
     /// </summary>
-    protected virtual ILogFilter Filter
+    protected virtual ILogFilter LogFilter
     {
-      get { return null; }
+      get { return _filter; }
     }
 
 
@@ -27,7 +36,7 @@ namespace Ivony.Logs
     {
       lock ( SyncRoot )
       {
-        if ( Filter == null || Filter.Writable( entry ) )
+        if ( LogFilter == null || LogFilter.Writable( entry ) )
           WriteLog( entry );
       }
     }
@@ -58,6 +67,7 @@ namespace Ivony.Logs
     {
       get { return _sync; }
     }
+
 
 
   }

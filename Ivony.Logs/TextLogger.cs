@@ -16,6 +16,12 @@ namespace Ivony.Logs
   public abstract class TextLogger : Logger
   {
 
+
+    protected TextLogger( ILogFilter filter = null ) : base( filter ) { }
+
+
+
+
     /// <summary>
     /// 写入一条日志信息
     /// </summary>

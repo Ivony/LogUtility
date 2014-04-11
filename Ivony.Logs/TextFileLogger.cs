@@ -14,15 +14,16 @@ namespace Ivony.Logs
   {
 
     private string _filepath;
-    private Encoding _encoding;
 
-    public TextFileLogger( string logFilepath, Encoding encoding = null )
+
+    public TextFileLogger( string logFilepath, Encoding encoding = null ) : this( null, logFilepath, encoding ) { }
+
+
+    public TextFileLogger( ILogFilter filter, string logFilepath, Encoding encoding = null ) : base( filter, encoding )
     {
 
       if ( logFilepath == null )
         throw new ArgumentNullException( "logFilepath" );
-
-      _encoding = encoding ?? Encoding.UTF8;
 
       if ( !Path.IsPathRooted( logFilepath ) )
       {
@@ -35,11 +36,6 @@ namespace Ivony.Logs
     }
 
 
-
-    public override Encoding Encoding
-    {
-      get { return _encoding; }
-    }
 
     protected override string GetFilepath( LogEntry entry )
     {
