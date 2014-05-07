@@ -37,7 +37,7 @@ namespace Ivony.Logs
 
 
 
-    protected override void WriteLogeMessage( LogEntry entry, string[] lines )
+    protected override void WriteLogMessage( LogEntry entry, string[] lines )
     {
       var path = GetFilepath( entry );
       Directory.CreateDirectory( Path.GetDirectoryName( path ) );

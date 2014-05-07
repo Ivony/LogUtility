@@ -24,7 +24,7 @@ namespace Ivony.Logs
 
     private static object _sync = new object();
 
-    protected override void WriteLogeMessage( LogEntry entry, string[] contents )
+    protected override void WriteLogMessage( LogEntry entry, string[] contents )
     {
       lock ( _sync )
       {

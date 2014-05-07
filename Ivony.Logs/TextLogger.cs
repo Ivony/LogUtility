@@ -44,7 +44,7 @@ namespace Ivony.Logs
     /// 派生类实现此方法写入日志
     /// </summary>
     /// <param name="contents">日志内容行</param>
-    protected abstract void WriteLogeMessage( LogEntry entry, string[] contents );
+    protected abstract void WriteLogMessage( LogEntry entry, string[] contents );
 
 
 
@@ -66,7 +66,7 @@ namespace Ivony.Logs
 
       if ( messageLines.Length == 1 )
       {
-        WriteLogeMessage( entry, new[] { padding + " " + messageLines[0] } );
+        WriteLogMessage( entry, new[] { padding + " " + messageLines[0] } );
         return;
       }
 
@@ -80,7 +80,7 @@ namespace Ivony.Logs
           messageLines[i] = padding + "|" + messageLines[i];
       }
 
-      WriteLogeMessage( entry, messageLines );
+      WriteLogMessage( entry, messageLines );
     }
 
 
