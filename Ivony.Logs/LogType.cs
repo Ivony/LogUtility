@@ -51,12 +51,24 @@ namespace Ivony.Logs
 
     public static bool operator ==( LogType type1, LogType type2 )
     {
+      if ( object.ReferenceEquals( type1, null ) && object.ReferenceEquals( type2, null ) )
+        return true;
+
+      if ( object.ReferenceEquals( type1, null ) || object.ReferenceEquals( type2, null ) )
+        return false;
+
       return type1.Guid.Equals( type2.Guid );
     }
 
 
     public static bool operator !=( LogType type1, LogType type2 )
     {
+      if ( object.ReferenceEquals( type1, null ) && object.ReferenceEquals( type2, null ) )
+        return false;
+
+      if ( object.ReferenceEquals( type1, null ) || object.ReferenceEquals( type2, null ) )
+        return true;
+
       return !type1.Guid.Equals( type2.Guid );
     }
 
