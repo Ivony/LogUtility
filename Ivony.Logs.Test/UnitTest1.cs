@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.IO;
 
 namespace Ivony.Logs.Test
 {
@@ -11,7 +12,7 @@ namespace Ivony.Logs.Test
     {
 
 
-      var logger = new ConsoleLogger() + new TextFileLogger( @"C:\Temp\Logs\1.log" ) + new TextFileSetLogger( @"C:\Temp\Logs\Test" );
+      var logger = new ConsoleLogger() + new TextFileLogger( @"C:\Temp\Logs\1.log" ) + new TextFileLogger( new DirectoryInfo( @"C:\Temp\Logs\Test" ) );
 
       logger.LogInfo( "Hello World!" );
       logger.LogInfo( "Hello World!" );

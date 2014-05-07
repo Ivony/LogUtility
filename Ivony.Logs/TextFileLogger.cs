@@ -13,33 +13,50 @@ namespace Ivony.Logs
   public class TextFileLogger : TextFileLoggerBase
   {
 
-    private string _filepath;
+    private LogFilenameProvider _filenameProvider;
 
 
-    public TextFileLogger( string logFilepath, Encoding encoding = null ) : this( null, logFilepath, encoding ) { }
+    private string basePath;
 
 
-    public TextFileLogger( ILogFilter filter, string logFilepath, Encoding encoding = null ) : base( filter, encoding )
+    private TextFileLogger( ILogFilter filter, Encoding encoding )
+      : base( filter, encoding )
+    {
+      basePath = AppDomain.CurrentDomain.SetupInformation.ApplicationBase;
+    }
+
+    public TextFileLogger( LogFilenameProvider filenameProvider, ILogFilter filter = null, Encoding encoding = null )
+      : this( filter, encoding )
     {
 
-      if ( logFilepath == null )
-        throw new ArgumentNullException( "logFilepath" );
+      if ( filenameProvider == null )
+        throw new ArgumentNullException( "filenameProvider" );
 
-      if ( !Path.IsPathRooted( logFilepath ) )
-      {
-        var basePath = AppDomain.CurrentDomain.SetupInformation.ApplicationBase;
-        logFilepath = Path.Combine( basePath, logFilepath );
+      _filenameProvider = filenameProvider;
 
-      }
-
-      _filepath = logFilepath;
     }
+
+    public TextFileLogger( DirectoryInfo logDirectory, ILogFilter filter = null, LogFilenameProvider cycle = null, string prefix = "", string postfix = "", string extension = ".log", Encoding encoding = null )
+      : this( filter, encoding )
+    {
+
+      if ( logDirectory == null )
+        throw new ArgumentNullException( "logDirectory" );
+
+      cycle = cycle ?? LogFileCycles.Daily;
+
+      _filenameProvider = logDirectory.FullName + Path.DirectorySeparatorChar + prefix + cycle + postfix + extension;
+
+    }
+
 
 
 
     protected override string GetFilepath( LogEntry entry )
     {
-      return _filepath;
+      var path = _filenameProvider.GetName( entry );
+
+      return Path.Combine( basePath, path );
     }
 
   }
