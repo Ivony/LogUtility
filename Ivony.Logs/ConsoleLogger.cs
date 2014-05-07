@@ -33,6 +33,17 @@ namespace Ivony.Logs
       }
     }
 
+    /// <summary>
+    /// 重写 GetPadding 方法，返回空字符串，在控制台显示时取消填充
+    /// </summary>
+    /// <param name="entry">当前要记录的日志条目</param>
+    /// <returns>永远返回空字符串</returns>
+    protected override string GetPadding( LogEntry entry )
+    {
+      return "";
+    }
+
+
   }
 
 }

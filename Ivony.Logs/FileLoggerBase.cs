@@ -8,14 +8,14 @@ namespace Ivony.Logs
 {
 
   /// <summary>
-  /// 文件日志记录器
+  /// 文本文件日志记录器基类
   /// </summary>
-  public abstract class FileLoggerBase : TextLogger
+  public abstract class TextFileLoggerBase : TextLogger
   {
 
 
 
-    protected FileLoggerBase( ILogFilter filter = null, Encoding encoding = null )
+    protected TextFileLoggerBase( ILogFilter filter = null, Encoding encoding = null )
       : base( filter )
     {
       _encoding = encoding ?? Encoding.UTF8;

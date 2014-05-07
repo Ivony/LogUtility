@@ -6,11 +6,14 @@ using System.Text;
 
 namespace Ivony.Logs
 {
-  public class TextFileSetLogger : FileLoggerBase
-  {
-    public TextFileSetLogger( string logDirectory, LogFileCycle cycle = null, string prefix = "", string postfix = "", string extension = ".log", Encoding encoding = null ) : this( null, logDirectory, cycle, prefix, postfix, extension, encoding ) { }
 
-    public TextFileSetLogger( ILogFilter filter, string logDirectory, LogFileCycle cycle = null, string prefix = "", string postfix = "", string extension = ".log", Encoding encoding = null )
+  /// <summary>
+  /// 按照日期自动记录在多个文本文件中的日志记录器。
+  /// </summary>
+  public class TextFileSetLogger : TextFileLoggerBase
+  {
+
+    public TextFileSetLogger( string logDirectory, ILogFilter filter = null, LogFileCycle cycle = null, string prefix = "", string postfix = "", string extension = ".log", Encoding encoding = null )
       : base( filter, encoding )
     {
       LogDirectory = logDirectory;

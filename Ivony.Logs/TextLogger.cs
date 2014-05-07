@@ -94,7 +94,7 @@ namespace Ivony.Logs
       if ( message == null )
         return null;
 
-      return message.Split( new[] { Environment.NewLine }, StringSplitOptions.None );
+      return message.Split( new[] { Environment.NewLine, "\r\n", "\r", "\n" }, StringSplitOptions.None );
     }
 
 
@@ -103,7 +103,7 @@ namespace Ivony.Logs
     /// </summary>
     /// <param name="entry">当前要记录的日志</param>
     /// <returns>当前日志消息的填充</returns>
-    private string GetPadding( LogEntry entry )
+    protected virtual string GetPadding( LogEntry entry )
     {
       return GetTypePrefix( entry.MetaData.Type ) + " " + entry.LogDate.ToString( DateTimeFormatString ) + " ";
     }

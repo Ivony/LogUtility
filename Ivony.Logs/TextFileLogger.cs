@@ -10,7 +10,7 @@ namespace Ivony.Logs
   /// <summary>
   /// 文件日志记录器
   /// </summary>
-  public class TextFileLogger : FileLoggerBase
+  public class TextFileLogger : TextFileLoggerBase
   {
 
     private string _filepath;
