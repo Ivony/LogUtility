@@ -25,6 +25,12 @@ namespace Ivony.Logs
       basePath = AppDomain.CurrentDomain.SetupInformation.ApplicationBase;
     }
 
+    /// <summary>
+    /// 创建文本文件日志记录器
+    /// </summary>
+    /// <param name="filenameProvider">文件名提供程序</param>
+    /// <param name="filter">日志筛选器</param>
+    /// <param name="encoding">文件编码</param>
     public TextFileLogger( LogFilenameProvider filenameProvider, ILogFilter filter = null, Encoding encoding = null )
       : this( filter, encoding )
     {
@@ -36,6 +42,16 @@ namespace Ivony.Logs
 
     }
 
+    /// <summary>
+    /// 创建文本文件日志记录器
+    /// </summary>
+    /// <param name="logDirectory">存放日志文件的目录</param>
+    /// <param name="filter">日志筛选器</param>
+    /// <param name="cycle">日志文件记录周期</param>
+    /// <param name="prefix">文件名前缀</param>
+    /// <param name="postfix">文件名后缀</param>
+    /// <param name="extension">文件扩展名</param>
+    /// <param name="encoding">文件编码</param>
     public TextFileLogger( DirectoryInfo logDirectory, ILogFilter filter = null, LogFilenameProvider cycle = null, string prefix = "", string postfix = "", string extension = ".log", Encoding encoding = null )
       : this( filter, encoding )
     {
@@ -52,6 +68,11 @@ namespace Ivony.Logs
 
 
 
+    /// <summary>
+    /// 获取日志文件路径
+    /// </summary>
+    /// <param name="entry">要记录的日志条目</param>
+    /// <returns>日志文件路径</returns>
     protected override string GetFilepath( LogEntry entry )
     {
       var path = _filenameProvider.GetName( entry );
