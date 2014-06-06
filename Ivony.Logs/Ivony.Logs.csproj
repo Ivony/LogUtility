@@ -42,11 +42,10 @@
   <ItemGroup>
     <Compile Include="ConsoleLogger.cs" />
     <Compile Include="FileLoggerBase.cs" />
-    <Compile Include="LogFileCycle.cs" />
-    <Compile Include="LogFilenameProvider.cs" />
+    <Compile Include="LogFileCycles.cs" />
+    <Compile Include="LogFilenameStrategy.cs" />
     <Compile Include="LogFilter.cs" />
     <Compile Include="TextFileLogger.cs" />
-    <Compile Include="ILogFilter.cs" />
     <Compile Include="LogEntry.cs" />
     <Compile Include="LogExtensions.cs" />
     <Compile Include="Logger.cs" />

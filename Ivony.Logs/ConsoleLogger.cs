@@ -19,7 +19,7 @@ namespace Ivony.Logs
     /// 创建 ConsoleLogger 实例
     /// </summary>
     /// <param name="filter">日志筛选器，确定哪些日志需要被记录</param>
-    public ConsoleLogger( ILogFilter filter = null ) : base( filter ) { }
+    public ConsoleLogger( LogFilter filter = null ) : base( filter ) { }
 
 
     private static object _sync = new object();

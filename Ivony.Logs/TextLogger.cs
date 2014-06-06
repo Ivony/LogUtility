@@ -21,7 +21,7 @@ namespace Ivony.Logs
     /// 创建 TextLogger 对象
     /// </summary>
     /// <param name="filter">日志筛选器</param>
-    protected TextLogger( ILogFilter filter = null ) : base( filter ) { }
+    protected TextLogger( LogFilter filter = null ) : base( filter ) { }
 
 
 

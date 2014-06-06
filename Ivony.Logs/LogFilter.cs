@@ -5,26 +5,46 @@ using System.Text;
 
 namespace Ivony.Logs
 {
-  public class LogFilter
+  public abstract class LogFilter
   {
+
+
+    /// <summary>
+    /// 确定指定的日志条目是否需要记录
+    /// </summary>
+    /// <param name="entry">日志条目</param>
+    /// <returns>是否需要记录</returns>
+    public abstract bool Writable( LogEntry entry );
 
 
     static LogFilter()
     {
-      Info = new ServerityBasedFilter( LogType.Info.Serverity, true );
-      Warning = new ServerityBasedFilter( LogType.Warning.Serverity, true );
-      Error = new ServerityBasedFilter( LogType.Error.Serverity, true );
-      Exception = new ServerityBasedFilter( LogType.Exception.Serverity, true );
-      FatalError = new ServerityBasedFilter( LogType.FatalError.Serverity, true );
+      Info = new ServerityBasedFilter( LogType.Info.Serverity, int.MaxValue );
+      Warning = new ServerityBasedFilter( LogType.Warning.Serverity, int.MaxValue );
+      Error = new ServerityBasedFilter( LogType.Error.Serverity, int.MaxValue );
+      Exception = new ServerityBasedFilter( LogType.Exception.Serverity, int.MaxValue );
+      FatalError = new ServerityBasedFilter( LogType.FatalError.Serverity, int.MaxValue );
 
-      OnlyException = new LogTypeBasedFilter( LogType.Exception );
+      InfoOnly = new LogTypeBasedFilter( LogType.Info );
+      WarningOnly = new LogTypeBasedFilter( LogType.Warning );
+      ErrorOnly = new LogTypeBasedFilter( LogType.Error );
+      ExceptionOnly = new LogTypeBasedFilter( LogType.Exception );
     }
 
 
     /// <summary>
     /// 指定记录一般性消息以及更严重的消息的日志筛选器
     /// </summary>
-    public static ILogFilter Info
+    public static LogFilter Info
+    {
+      get;
+      private set;
+    }
+
+    /// <summary>
+    /// 指定只记录一般性消息的日志筛选器
+    /// </summary>
+    public static LogFilter InfoOnly
     {
       get;
       private set;
@@ -33,7 +53,16 @@ namespace Ivony.Logs
     /// <summary>
     /// 指定记录警告消息以及更严重的消息的日志筛选器
     /// </summary>
-    public static ILogFilter Warning
+    public static LogFilter Warning
+    {
+      get;
+      private set;
+    }
+
+    /// <summary>
+    /// 指定只记录警告消息的日志筛选器
+    /// </summary>
+    public static LogFilter WarningOnly
     {
       get;
       private set;
@@ -42,7 +71,16 @@ namespace Ivony.Logs
     /// <summary>
     /// 指定记录错误消息以及更严重的消息的日志筛选器
     /// </summary>
-    public static ILogFilter Error
+    public static LogFilter Error
+    {
+      get;
+      private set;
+    }
+
+    /// <summary>
+    /// 指定只记录错误消息的日志筛选器
+    /// </summary>
+    public static LogFilter ErrorOnly
     {
       get;
       private set;
@@ -51,7 +89,7 @@ namespace Ivony.Logs
     /// <summary>
     /// 指定记录异常消息以及更严重的消息的日志筛选器
     /// </summary>
-    public static ILogFilter Exception
+    public static LogFilter Exception
     {
       get;
       private set;
@@ -60,7 +98,7 @@ namespace Ivony.Logs
     /// <summary>
     /// 指定只记录异常消息的日志筛选器
     /// </summary>
-    public static ILogFilter OnlyException
+    public static LogFilter ExceptionOnly
     {
       get;
       private set;
@@ -69,49 +107,46 @@ namespace Ivony.Logs
     /// <summary>
     /// 指定记录致命错误消息以及更严重的消息的日志筛选器
     /// </summary>
-    public static ILogFilter FatalError
+    public static LogFilter FatalError
     {
       get;
       private set;
     }
 
 
-    private class ServerityBasedFilter : ILogFilter
+    private class ServerityBasedFilter : LogFilter
     {
 
-      public ServerityBasedFilter( int serverity, bool allowHigher )
+      public ServerityBasedFilter( int minServerity, int maxServerity )
       {
-        Serverity = serverity;
-        AllowHigher = allowHigher;
+        MinServerity = minServerity;
+        MaxServerity = maxServerity;
       }
 
-      public int Serverity
+      public int MinServerity
+      {
+        get;
+        private set;
+      }
+
+      public int MaxServerity
       {
         get;
         private set;
       }
 
 
-      public bool AllowHigher
-      {
-        get;
-        private set;
-      }
-
-      bool ILogFilter.Writable( LogEntry entry )
+      public override bool Writable( LogEntry entry )
       {
         var serverity = entry.MetaData.Type.Serverity;
 
-        if ( AllowHigher )
-          return serverity >= Serverity;
+        return serverity >= MinServerity && serverity < MaxServerity;
 
-        else
-          return serverity == Serverity;
       }
     }
 
 
-    private class LogTypeBasedFilter : ILogFilter
+    private class LogTypeBasedFilter : LogFilter
     {
       public LogTypeBasedFilter( LogType type )
       {
@@ -126,7 +161,7 @@ namespace Ivony.Logs
       }
 
 
-      bool ILogFilter.Writable( LogEntry entry )
+      public override bool Writable( LogEntry entry )
       {
         return LogType.Equals( entry.MetaData.Type );
       }

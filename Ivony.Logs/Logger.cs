@@ -5,15 +5,27 @@ using System.Text;
 
 namespace Ivony.Logs
 {
+
+
+  /// <summary>
+  /// 定义所有日志记录器的基类型
+  /// </summary>
   public abstract class Logger
   {
 
 
-    private ILogFilter _filter;
+    private LogFilter _filter;
 
+    /// <summary>
+    /// 创建 Logger 对象
+    /// </summary>
     protected Logger() : this( null ) { }
 
-    protected Logger( ILogFilter filter )
+    /// <summary>
+    /// 创建 Logger 对象
+    /// </summary>
+    /// <param name="filter">日志筛选器</param>
+    protected Logger( LogFilter filter )
     {
       _filter = filter;
     }
@@ -22,7 +34,7 @@ namespace Ivony.Logs
     /// <summary>
     /// 用于筛选要记录的日志条目的日志筛选器
     /// </summary>
-    protected virtual ILogFilter LogFilter
+    protected virtual LogFilter LogFilter
     {
       get { return _filter; }
     }

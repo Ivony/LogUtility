@@ -15,7 +15,7 @@ namespace Ivony.Logs
 
 
 
-    protected TextFileLoggerBase( ILogFilter filter = null, Encoding encoding = null )
+    protected TextFileLoggerBase( LogFilter filter = null, Encoding encoding = null )
       : base( filter )
     {
       _encoding = encoding ?? Encoding.UTF8;
