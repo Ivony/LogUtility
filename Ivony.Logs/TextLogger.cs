@@ -17,6 +17,10 @@ namespace Ivony.Logs
   {
 
 
+    /// <summary>
+    /// 创建 TextLogger 对象
+    /// </summary>
+    /// <param name="filter">日志筛选器</param>
     protected TextLogger( ILogFilter filter = null ) : base( filter ) { }
 
 
@@ -32,6 +36,11 @@ namespace Ivony.Logs
     }
 
 
+
+    /// <summary>
+    /// 释放文本编写器
+    /// </summary>
+    /// <param name="writer"></param>
     protected virtual void ReleaseWriter( TextWriter writer )
     {
       writer.Flush();
@@ -143,7 +152,7 @@ namespace Ivony.Logs
         return "!!";
 
       else
-        return "?!!";
+        return "?!";
     }
 
 

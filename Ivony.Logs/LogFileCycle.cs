@@ -13,7 +13,7 @@ namespace Ivony.Logs
   {
 
 
-    private class DailyCycle : LogFilenameProvider
+    private class DailyCycle : LogFilenameStrategy
     {
       public override string GetName( LogEntry entry )
       {
@@ -21,7 +21,7 @@ namespace Ivony.Logs
       }
     }
 
-    private class HourlyCycle : LogFilenameProvider
+    private class HourlyCycle : LogFilenameStrategy
     {
       public override string GetName( LogEntry entry )
       {
@@ -29,7 +29,7 @@ namespace Ivony.Logs
       }
     }
 
-    private class MinutelyCycle : LogFilenameProvider
+    private class MinutelyCycle : LogFilenameStrategy
     {
       public override string GetName( LogEntry entry )
       {
@@ -37,7 +37,7 @@ namespace Ivony.Logs
       }
     }
 
-    private class MonthlyCycle : LogFilenameProvider
+    private class MonthlyCycle : LogFilenameStrategy
     {
       public override string GetName( LogEntry entry )
       {
@@ -46,16 +46,16 @@ namespace Ivony.Logs
     }
 
 
-    private static LogFilenameProvider _daily = new DailyCycle();
-    private static LogFilenameProvider _hourly = new HourlyCycle();
-    private static LogFilenameProvider _minutely = new MinutelyCycle();
-    private static LogFilenameProvider _monthly = new MonthlyCycle();
+    private static LogFilenameStrategy _daily = new DailyCycle();
+    private static LogFilenameStrategy _hourly = new HourlyCycle();
+    private static LogFilenameStrategy _minutely = new MinutelyCycle();
+    private static LogFilenameStrategy _monthly = new MonthlyCycle();
 
 
-    public static LogFilenameProvider Daily { get { return _daily; } }
-    public static LogFilenameProvider Hourly { get { return _hourly; } }
-    public static LogFilenameProvider Minutely { get { return _minutely; } }
-    public static LogFilenameProvider Monthly { get { return _monthly; } }
+    public static LogFilenameStrategy Daily { get { return _daily; } }
+    public static LogFilenameStrategy Hourly { get { return _hourly; } }
+    public static LogFilenameStrategy Minutely { get { return _minutely; } }
+    public static LogFilenameStrategy Monthly { get { return _monthly; } }
 
 
   }

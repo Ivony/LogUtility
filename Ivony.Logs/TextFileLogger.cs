@@ -13,7 +13,7 @@ namespace Ivony.Logs
   public class TextFileLogger : TextFileLoggerBase
   {
 
-    private LogFilenameProvider _filenameProvider;
+    private LogFilenameStrategy _filenameProvider;
 
 
     private string basePath;
@@ -31,7 +31,7 @@ namespace Ivony.Logs
     /// <param name="filenameProvider">文件名提供程序</param>
     /// <param name="filter">日志筛选器</param>
     /// <param name="encoding">文件编码</param>
-    public TextFileLogger( LogFilenameProvider filenameProvider, ILogFilter filter = null, Encoding encoding = null )
+    public TextFileLogger( LogFilenameStrategy filenameProvider, ILogFilter filter = null, Encoding encoding = null )
       : this( filter, encoding )
     {
 
@@ -52,7 +52,7 @@ namespace Ivony.Logs
     /// <param name="postfix">文件名后缀</param>
     /// <param name="extension">文件扩展名</param>
     /// <param name="encoding">文件编码</param>
-    public TextFileLogger( DirectoryInfo logDirectory, ILogFilter filter = null, LogFilenameProvider cycle = null, string prefix = "", string postfix = "", string extension = ".log", Encoding encoding = null )
+    public TextFileLogger( DirectoryInfo logDirectory, ILogFilter filter = null, LogFilenameStrategy cycle = null, string prefix = "", string postfix = "", string extension = ".log", Encoding encoding = null )
       : this( filter, encoding )
     {
 
