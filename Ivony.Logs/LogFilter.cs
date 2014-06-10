@@ -17,6 +17,57 @@ namespace Ivony.Logs
     public abstract bool Writable( LogEntry entry );
 
 
+
+
+    public static LogFilter operator +( LogFilter filter1, LogFilter filter2 )
+    {
+      var unionFilter1 = filter1 as UnionFilter;
+      var unionFilter2 = filter2 as UnionFilter;
+
+      var filters = new List<LogFilter>();
+
+      if ( unionFilter1 != null )
+        filters.AddRange( unionFilter1.Filters );
+      else
+        filters.Add( filter1 );
+
+      if ( unionFilter2 != null )
+        filters.AddRange( unionFilter2.Filters );
+      else
+        filters.Add( filter2 );
+
+      return new UnionFilter( filters );
+    }
+
+
+    private class UnionFilter : LogFilter
+    {
+
+
+      public UnionFilter( IEnumerable<LogFilter> filters )
+      {
+        Filters = filters.ToArray();
+      }
+
+
+      public LogFilter[] Filters
+      {
+        get;
+        private set;
+      }
+
+
+      public override bool Writable( LogEntry entry )
+      {
+        return Filters.Any( filter => filter.Writable( entry ) );
+      }
+    }
+
+
+
+
+
+
     static LogFilter()
     {
       Info = new ServerityBasedFilter( LogType.Info.Serverity, int.MaxValue );
