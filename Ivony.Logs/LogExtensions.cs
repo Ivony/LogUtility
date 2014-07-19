@@ -55,7 +55,7 @@ namespace Ivony.Logs
       LogWithCustomType( logger, LogType.Exception, exception.ToString() );
     }
 
-    
+
     /// <summary>
     /// 记录一个致命错误信息
     /// </summary>
@@ -83,13 +83,25 @@ namespace Ivony.Logs
 
     private static void LogWithCustomType( Logger logger, LogType type, string message, params object[] args )
     {
-      var meta = LogMeta.Blank;
+
+      var meta = GetLogMeta( logger, type );
       meta.Type = type;
 
       if ( args.Any() )
         message = string.Format( message, args );
 
       logger.LogEntry( new LogEntry( message, meta ) );
+    }
+
+    private static LogMeta GetLogMeta( Logger logger, LogType type )
+    {
+      var provider = logger as ILogMetaProvider;
+      if ( provider != null )
+        return provider.GetLogMeta( type );
+
+      var meta = LogMeta.Blank;
+      meta.Type = type;
+      return meta;
     }
 
   }

@@ -8,7 +8,7 @@ namespace Ivony.Logs
   public static class LogFilterExtensions
   {
 
-    public LogFilter FromSource( this LogFilter filter, string logSource )
+    public static LogFilter FromSource( this LogFilter filter, string logSource )
     {
       return filter & LogFilter.BySource( logSource );
     }
