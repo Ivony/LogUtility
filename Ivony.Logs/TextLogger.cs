@@ -121,7 +121,17 @@ namespace Ivony.Logs
     /// <returns>当前日志消息的填充</returns>
     protected virtual string GetPadding( LogEntry entry )
     {
-      return GetTypePrefix( entry.MetaData.Type ) + " " + entry.LogDate.ToString( DateTimeFormatString ) + " ";
+      return GetTypePrefix( entry.MetaData.Type ) + " " + GetDateTime( entry ).ToString( DateTimeFormatString ) + " ";
+    }
+
+    /// <summary>
+    /// 获取转换时区后的日志记录时间
+    /// </summary>
+    /// <param name="entry">日志条目</param>
+    /// <returns>转换后的时间</returns>
+    protected DateTime GetDateTime( LogEntry entry )
+    {
+      return TimeZoneInfo.ConvertTimeFromUtc( entry.LogDate, TimeZone );
     }
 
 
