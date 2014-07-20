@@ -13,24 +13,16 @@ namespace Ivony.Logs
   {
 
 
-    public LogCollection( LogFilter filter = null )
-      : base( filter )
-    {
-      SyncRoot = new object();
-    }
+    
+    /// <summary>
+    /// 创建 LogCollection 对象
+    /// </summary>
+    /// <param name="filter"></param>
+    public LogCollection( LogFilter filter = null ) : base( filter ) { }
 
 
 
     private List<LogEntry> _list = new List<LogEntry>();
-
-    /// <summary>
-    /// 获取用于同步的对象
-    /// </summary>
-    public object SyncRoot
-    {
-      get;
-      private set;
-    }
 
 
     /// <summary>

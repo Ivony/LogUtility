@@ -5,6 +5,10 @@ using System.Text;
 
 namespace Ivony.Logs
 {
+
+  /// <summary>
+  /// 定义日志筛选器的抽象基类
+  /// </summary>
   public abstract class LogFilter
   {
 
@@ -19,6 +23,12 @@ namespace Ivony.Logs
 
 
 
+    /// <summary>
+    /// 从两个日志筛选器中创建一个新的日志筛选器，只要满足其中任何一个日志筛选器的条件即记录日志
+    /// </summary>
+    /// <param name="filter1">第一个日志筛选器</param>
+    /// <param name="filter2">第二个日志筛选器</param>
+    /// <returns>创建的新的日志筛选器</returns>
     public static LogFilter operator |( LogFilter filter1, LogFilter filter2 )
     {
       var anyFilter1 = filter1 as AnyFilter;
@@ -40,6 +50,12 @@ namespace Ivony.Logs
     }
 
 
+    /// <summary>
+    /// 从两个日志筛选器中创建一个新的日志筛选器，需要满足所有日志筛选器的条件才记录日志
+    /// </summary>
+    /// <param name="filter1">第一个日志筛选器</param>
+    /// <param name="filter2">第二个日志筛选器</param>
+    /// <returns>创建的新的日志筛选器</returns>
     public static LogFilter operator &( LogFilter filter1, LogFilter filter2 )
     {
       var allFilter1 = filter1 as AllFilter;

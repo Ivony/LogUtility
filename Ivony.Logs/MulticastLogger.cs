@@ -14,9 +14,17 @@ namespace Ivony.Logs
   {
 
 
-
+    /// <summary>
+    /// 创建一个多播日志记录器
+    /// </summary>
+    /// <param name="loggers">需要记录日志的日志记录器</param>
     public MulticastLogger( params Logger[] loggers ) : this( true, loggers ) { }
 
+    /// <summary>
+    /// 创建一个多播日志记录器
+    /// </summary>
+    /// <param name="throwExceptions">当任何一个日志记录器抛出异常时，是否应当中断日志记录并抛出异常</param>
+    /// <param name="loggers">需要记录日志的日志记录器</param>
     public MulticastLogger( bool throwExceptions, params Logger[] loggers )
     {
       ThrowExceptions = throwExceptions;
@@ -34,8 +42,14 @@ namespace Ivony.Logs
     }
 
 
+    /// <summary>
+    /// 需要被转发的日志记录器
+    /// </summary>
     public ICollection<Logger> Loggers { get; private set; }
 
+    /// <summary>
+    /// 当记录日志出现异常时是否中断日志记录并抛出异常
+    /// </summary>
     public bool ThrowExceptions { get; private set; }
 
 

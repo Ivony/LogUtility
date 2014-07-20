@@ -5,10 +5,19 @@ using System.Text;
 
 namespace Ivony.Logs
 {
+
+  /// <summary>
+  /// 定义 LogMeta 数据提供程序
+  /// </summary>
   public interface ILogMetaProvider
   {
 
 
+    /// <summary>
+    /// 获取 LogMeta 数据
+    /// </summary>
+    /// <param name="type">供参考的日志类型</param>
+    /// <returns>LogMeta 数据</returns>
     LogMeta GetLogMeta( LogType type );
   }
 }

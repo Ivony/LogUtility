@@ -21,6 +21,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Debug\Ivony.Logs.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -48,7 +49,6 @@
     <Compile Include="LogFilenameStrategy.cs" />
     <Compile Include="LogFilter.cs" />
     <Compile Include="LogFilterExtensions.cs" />
-    <Compile Include="LoggerWithSource.cs" />
     <Compile Include="LogSourceNameRestrictFilter.cs" />
     <Compile Include="TextFileLogger.cs" />
     <Compile Include="LogEntry.cs" />

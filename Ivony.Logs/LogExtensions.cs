@@ -5,6 +5,10 @@ using System.Text;
 
 namespace Ivony.Logs
 {
+
+  /// <summary>
+  /// 提供记录日志的一系列扩展方法
+  /// </summary>
   public static class LogExtensions
   {
 

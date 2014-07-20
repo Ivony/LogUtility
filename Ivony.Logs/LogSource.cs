@@ -12,6 +12,9 @@ namespace Ivony.Logs
   public abstract class LogSource
   {
 
+    /// <summary>
+    /// 日志源名称
+    /// </summary>
     public abstract string Name { get; }
 
   }
