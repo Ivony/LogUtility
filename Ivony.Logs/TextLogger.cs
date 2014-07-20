@@ -21,7 +21,12 @@ namespace Ivony.Logs
     /// 创建 TextLogger 对象
     /// </summary>
     /// <param name="filter">日志筛选器</param>
-    protected TextLogger( LogFilter filter = null ) : base( filter ) { }
+    /// <param name="timezone">时区信息（默认为UTC-0）</param>
+    protected TextLogger( LogFilter filter = null, TimeZoneInfo timezone = null )
+      : base( filter )
+    {
+      _timezone = timezone ?? TimeZoneInfo.Utc;
+    }
 
 
 
@@ -52,7 +57,8 @@ namespace Ivony.Logs
     /// <summary>
     /// 派生类实现此方法写入日志
     /// </summary>
-    /// <param name="contents">日志内容行</param>
+    /// <param name="entry">要写入的日志条目</param>
+    /// <param name="contents">要写入的日志内容</param>
     protected abstract void WriteLogMessage( LogEntry entry, string[] contents );
 
 
@@ -63,8 +69,9 @@ namespace Ivony.Logs
     /// <summary>
     /// 使用指定的前缀写入多行日志
     /// </summary>
+    /// <param name="entry">要写入的日志条目</param>
     /// <param name="padding">填充字符串，将会添加在每一行日志的前面</param>
-    /// <param name="message">日志消息</param>
+    /// <param name="message">要写入的日志消息</param>
     protected virtual void Write( LogEntry entry, string padding, string message )
     {
 
@@ -156,10 +163,25 @@ namespace Ivony.Logs
     }
 
 
+    /// <summary>
+    /// 获取日期字符串格式
+    /// </summary>
     protected virtual string DateTimeFormatString
     {
       get { return "yyyy-MM-dd HH:mm:ss"; }
     }
+
+
+    private TimeZoneInfo _timezone;
+
+    /// <summary>
+    /// 获取应使用的时区信息（默认为UTC-0）
+    /// </summary>
+    public virtual TimeZoneInfo TimeZone
+    {
+      get { return _timezone; }
+    }
+
 
 
 

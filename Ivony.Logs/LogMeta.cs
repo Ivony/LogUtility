@@ -30,6 +30,10 @@ namespace Ivony.Logs
       Type = LogType.Info
     };
 
+
+    /// <summary>
+    /// 获取空白日志元数据
+    /// </summary>
     public static LogMeta Blank
     {
       get { return _blank; }

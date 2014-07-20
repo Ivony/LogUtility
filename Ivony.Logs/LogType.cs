@@ -29,6 +29,11 @@ namespace Ivony.Logs
     public abstract Guid Guid { get; }
 
 
+    /// <summary>
+    /// 重写 Equals 方法，比较两个 LogType
+    /// </summary>
+    /// <param name="obj">要比较的对象</param>
+    /// <returns>两个对象是否相等</returns>
     public override bool Equals( object obj )
     {
       var type = obj as LogType;
@@ -40,6 +45,10 @@ namespace Ivony.Logs
     }
 
 
+    /// <summary>
+    /// 重写 GetHashCode 方法，确保两个相同的 LogType 对象返回一样的结果
+    /// </summary>
+    /// <returns>对象的哈希值</returns>
     public override int GetHashCode()
     {
       return Guid.GetHashCode();

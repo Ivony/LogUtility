@@ -16,23 +16,35 @@ namespace Ivony.Logs
   {
 
 
-    public LogSourceNameRestrictFilter( string logSource )
+    /// <summary>
+    /// 创建 LogSourceNameRestrictFilter 对象
+    /// </summary>
+    /// <param name="sourceName">日志源名称</param>
+    public LogSourceNameRestrictFilter( string sourceName )
     {
 
-      if ( logSource == null )
+      if ( sourceName == null )
         throw new ArgumentNullException( "logSource" );
 
-      LogSourceName = logSource;
+      SourceName = sourceName;
     }
 
 
-    public string LogSourceName
+    /// <summary>
+    /// 日志源名称
+    /// </summary>
+    public string SourceName
     {
       get;
       private set;
     }
 
 
+    /// <summary>
+    /// 重写 Writable 方法，确认日志条目是否由指定的日志源产生
+    /// </summary>
+    /// <param name="entry">要检查的日志条目</param>
+    /// <returns>日志条目是否由指定的日志源产生</returns>
     public override bool Writable( LogEntry entry )
     {
       var source = entry.MetaData.Source;
@@ -40,7 +52,7 @@ namespace Ivony.Logs
       if ( source == null )
         return false;
 
-      return string.Equals( LogSourceName, source.Name, StringComparison.OrdinalIgnoreCase );
+      return string.Equals( SourceName, source.Name, StringComparison.OrdinalIgnoreCase );
     }
   }
 }

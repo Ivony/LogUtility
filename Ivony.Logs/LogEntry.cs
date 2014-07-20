@@ -17,7 +17,7 @@ namespace Ivony.Logs
     /// 创建一条日志记录
     /// </summary>
     /// <param name="message">日志消息</param>
-    /// <param name="scope">当前所处的范畴</param>
+    /// <param name="meta">日志元数据</param>
     /// <param name="raw">日志记录的原始对象</param>
     public LogEntry( string message, LogMeta meta = null, object raw = null )
     {

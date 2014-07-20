@@ -24,6 +24,11 @@ namespace Ivony.Logs
 
     private static object _sync = new object();
 
+    /// <summary>
+    /// 重写 WriteLogMessage 方法，在控制台输出日志信息
+    /// </summary>
+    /// <param name="entry">日志条目</param>
+    /// <param name="contents">要显示的文本内容</param>
     protected override void WriteLogMessage( LogEntry entry, string[] contents )
     {
       lock ( _sync )

@@ -7,7 +7,7 @@ namespace Ivony.Logs
 {
 
   /// <summary>
-  /// 定义日志文件名提供程序
+  /// 定义日志文件名策略
   /// </summary>
   public abstract class LogFilenameStrategy
   {
@@ -21,15 +21,50 @@ namespace Ivony.Logs
 
 
 
+    /// <summary>
+    /// 提供从字符串对象到 LogFilenameStrategy 对象的隐式类型转换
+    /// </summary>
+    /// <param name="literal">要转换为日志文件名策略的文本字符串</param>
+    /// <returns>一个静态的日志文件名策略</returns>
     public static implicit operator LogFilenameStrategy( string literal )
     {
       return new Literal( literal );
     }
 
 
+    /// <summary>
+    /// 合并两个日志文件名策略
+    /// </summary>
+    /// <param name="strategy1">第一个日志文件名策略</param>
+    /// <param name="strategy2">另一个日志文件名策略</param>
+    /// <returns>合并后的日志文件名策略</returns>
     public static LogFilenameStrategy operator +( LogFilenameStrategy strategy1, LogFilenameStrategy strategy2 )
     {
       return Series.Concat( strategy1, strategy2 );
+    }
+
+
+    /// <summary>
+    /// 合并一个静态文本前缀到日志文件名策略
+    /// </summary>
+    /// <param name="literal">前缀文本</param>
+    /// <param name="strategy">日志文件名策略</param>
+    /// <returns>合并后的日志文件名策略</returns>
+    public static LogFilenameStrategy operator +( string literal, LogFilenameStrategy strategy )
+    {
+      return Series.Concat( literal, strategy );
+    }
+
+
+    /// <summary>
+    /// 合并一个静态文本后缀到日志文件名策略
+    /// </summary>
+    /// <param name="strategy">日志文件名策略</param>
+    /// <param name="literal">后缀文本</param>
+    /// <returns>合并后的日志文件名策略</returns>
+    public static LogFilenameStrategy operator +( LogFilenameStrategy strategy, string literal )
+    {
+      return Series.Concat( strategy, literal );
     }
 
 
