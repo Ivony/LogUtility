@@ -50,6 +50,7 @@
     <Compile Include="LogFilter.cs" />
     <Compile Include="LogFilterExtensions.cs" />
     <Compile Include="LogSourceNameRestrictFilter.cs" />
+    <Compile Include="PipedLogger.cs" />
     <Compile Include="TextFileLogger.cs" />
     <Compile Include="LogEntry.cs" />
     <Compile Include="LogExtensions.cs" />
