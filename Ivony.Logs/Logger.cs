@@ -10,7 +10,7 @@ namespace Ivony.Logs
   /// <summary>
   /// 定义所有日志记录器的基类型
   /// </summary>
-  public abstract class Logger
+  public abstract class Logger : IDisposable
   {
 
 
@@ -82,5 +82,12 @@ namespace Ivony.Logs
 
 
 
+
+    /// <summary>
+    /// 派生类重写此方法以释放资源
+    /// </summary>
+    public virtual void Dispose()
+    {
+    }
   }
 }

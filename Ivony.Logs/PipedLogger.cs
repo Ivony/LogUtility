@@ -79,5 +79,16 @@ namespace Ivony.Logs
 
       base.LogEntry( entry );
     }
+
+
+
+    /// <summary>
+    /// 重写 Dispose 方法，释放内联日志记录器的资源
+    /// </summary>
+    public override void Dispose()
+    {
+      InnerLogger.Dispose();
+    }
+
   }
 }

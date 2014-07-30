@@ -81,5 +81,17 @@ namespace Ivony.Logs
       if ( exceptions.Any() )
         throw new AggregateException( exceptions.ToArray() );
     }
+
+
+    /// <summary>
+    /// 重写 Dispose 方法，释放所有日志记录器的资源
+    /// </summary>
+    public override void Dispose()
+    {
+      foreach ( var logger in Loggers )
+      {
+        logger.Dispose();
+      }
+    }
   }
 }
