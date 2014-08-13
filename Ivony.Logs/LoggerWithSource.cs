@@ -5,30 +5,27 @@ using System.Text;
 
 namespace Ivony.Logs
 {
-  internal class LoggerWithSource : Logger, ILogMetaProvider
+  internal class LoggerWithSource : PipedLogger, ILogMetaProvider
   {
 
 
     public LoggerWithSource( Logger logger, LogSource source )
+      : base( logger )
     {
-      InnerLogger = logger;
       Source = source;
-
     }
 
-    public Logger InnerLogger { get; private set; }
 
     public LogSource Source { get; private set; }
 
 
 
 
-    protected override void WriteLog( LogEntry entry )
-    {
-      InnerLogger.LogEntry( entry );
-    }
+    protected override void WriteLog( LogEntry entry ) { }
 
-    public LogMeta GetLogMeta( LogType type )
+
+
+    public LogMeta GetLogMeta( LogType type = null, LogSource source = null )
     {
       return new LogMeta()
       {
@@ -36,6 +33,5 @@ namespace Ivony.Logs
         Type = type
       };
     }
-
   }
 }
