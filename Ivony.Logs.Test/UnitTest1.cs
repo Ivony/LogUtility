@@ -30,6 +30,8 @@ namespace Ivony.Logs.Test
         logger.LogException( e );
       }
 
+      //TextLogFileManager.Flush();
+
     }
   }
 }

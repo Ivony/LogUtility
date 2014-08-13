@@ -65,7 +65,16 @@ namespace Ivony.Logs
     {
       var path = GetFilepath( entry );
       Directory.CreateDirectory( Path.GetDirectoryName( path ) );
-      File.AppendAllLines( path, lines );
+
+
+      var build = new StringBuilder();
+      foreach ( var l in lines )
+      {
+        build.Append( l );
+        build.Append( Environment.NewLine );
+      }
+
+      TextLogFileManager.WriteText( path, build.ToString(), Encoding );
     }
 
 
