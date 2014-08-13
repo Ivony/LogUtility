@@ -47,6 +47,15 @@ namespace Ivony.Logs
 
 
 
+    protected FileStream OpenFile( string filepath )
+    {
+      Directory.CreateDirectory( Path.GetDirectoryName( filepath ) );
+      return new FileStream( filepath, FileMode.Append, FileAccess.Write, FileShare.Read );
+
+    }
+
+
+
     /// <summary>
     /// 重写 WriteLogMessage 方法将日志写入文本文件
     /// </summary>
