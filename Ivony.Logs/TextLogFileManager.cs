@@ -75,7 +75,7 @@ namespace Ivony.Logs
         else
         {
           Directory.CreateDirectory( Path.GetDirectoryName( filepath ) );
-          var stream = SynchronizedFileStream.OpenFile( filepath );
+          var stream = new SynchronizedFileStream( filepath );
           _collection.Add( stream );
           return stream;
         }
@@ -148,8 +148,11 @@ namespace Ivony.Logs
 
     private sealed class SynchronizedFileStream : IDisposable
     {
-      private SynchronizedFileStream()
+      public SynchronizedFileStream( string filepath )
       {
+        Filepath = filepath;
+        FileStream = File.Open( filepath, FileMode.Append, FileAccess.Write, FileShare.Read );
+        SyncRoot = new object();
       }
 
 
@@ -167,7 +170,7 @@ namespace Ivony.Logs
 
         if ( writer != null )
         {
-          if ( writer.Encoding == encoding )
+          if ( writer.Encoding.Equals( encoding ) )
             return writer;
 
           writer.Flush();
@@ -181,19 +184,6 @@ namespace Ivony.Logs
       {
         if ( writer != null )
           writer.Flush();
-      }
-
-
-      public static SynchronizedFileStream OpenFile( string filepath )
-      {
-        var stream = File.Open( filepath, FileMode.Append, FileAccess.Write, FileShare.Read );
-
-        return new SynchronizedFileStream
-        {
-          SyncRoot = new object(),
-          Filepath = filepath,
-          FileStream = stream
-        };
       }
 
 
