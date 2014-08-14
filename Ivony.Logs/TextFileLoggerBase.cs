@@ -63,7 +63,7 @@ namespace Ivony.Logs
         build.Append( Environment.NewLine );
       }
 
-      TextLogFileManager.WriteText( path, build.ToString(), Encoding );
+      TextLogFileManager.WriteText( path, build.ToString(), Encoding, entry.MetaData.Type.Serverity >= LogType.Error.Serverity );
     }
 
 
