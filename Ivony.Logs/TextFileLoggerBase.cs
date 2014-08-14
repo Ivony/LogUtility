@@ -22,7 +22,7 @@ namespace Ivony.Logs
     protected TextFileLoggerBase( LogFilter filter = null, Encoding encoding = null )
       : base( filter )
     {
-      _encoding = encoding ?? Encoding.UTF8;
+      _encoding = encoding ?? TextLogFileManager.DefaultEncoding;
     }
 
 
@@ -47,15 +47,6 @@ namespace Ivony.Logs
 
 
 
-    protected FileStream OpenFile( string filepath )
-    {
-      Directory.CreateDirectory( Path.GetDirectoryName( filepath ) );
-      return new FileStream( filepath, FileMode.Append, FileAccess.Write, FileShare.Read );
-
-    }
-
-
-
     /// <summary>
     /// 重写 WriteLogMessage 方法将日志写入文本文件
     /// </summary>
@@ -64,8 +55,6 @@ namespace Ivony.Logs
     protected override void WriteLogMessage( LogEntry entry, string[] lines )
     {
       var path = GetFilepath( entry );
-      Directory.CreateDirectory( Path.GetDirectoryName( path ) );
-
 
       var build = new StringBuilder();
       foreach ( var l in lines )

@@ -63,6 +63,12 @@ namespace Ivony.Logs
 
 
 
+    /// <summary>
+    /// 重载 + 运算符，合并两个日志记录器，创建一个多播日志记录器
+    /// </summary>
+    /// <param name="logger1">要合并的第一个日志记录器</param>
+    /// <param name="logger2">要合并的第二个日志记录器</param>
+    /// <returns>合并后的多播日志记录器</returns>
     public static Logger operator +( Logger logger1, Logger logger2 )
     {
       return new MulticastLogger( logger1, logger2 );
