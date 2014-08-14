@@ -19,7 +19,16 @@ namespace Ivony.Logs
     public static bool AutoFlush
     {
       get { return _autoFlush; }
-      set { lock ( _sync ) _autoFlush = value; }
+      set
+      {
+        lock ( _sync )
+        {
+          _autoFlush = value;
+
+          if ( value )
+            Flush();
+        }
+      }
     }
 
 
