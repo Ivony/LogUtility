@@ -194,13 +194,6 @@ namespace Ivony.Logs
         FileStream = null;
         Filepath = null;
       }
-
-
-      ~SynchronizedFileStream()
-      {
-        if ( writer != null )
-          writer.Flush();
-      }
     }
 
 
