@@ -151,10 +151,9 @@ namespace Ivony.Logs
       public SynchronizedFileStream( string filepath )
       {
         Filepath = filepath;
-        FileStream = File.Open( filepath, FileMode.Append, FileAccess.Write, FileShare.Read );
+        FileStream = OpenFile( filepath );
         SyncRoot = new object();
       }
-
 
       public string Filepath { get; private set; }
 
@@ -173,10 +172,24 @@ namespace Ivony.Logs
           if ( writer.Encoding.Equals( encoding ) )
             return writer;
 
-          writer.Flush();
+#if net45
+          writer.Dispose();
+#else
+          writer.Dispose();
+          FileStream = OpenFile( Filepath );
+#endif
         }
-
+#if net45
+        return writer = new StreamWriter( FileStream, encoding, 1024, true );
+#else
         return writer = new StreamWriter( FileStream, encoding );
+#endif
+      }
+
+
+      private static FileStream OpenFile( string filepath )
+      {
+        return File.Open( filepath, FileMode.Append, FileAccess.Write, FileShare.Read );
       }
 
 
