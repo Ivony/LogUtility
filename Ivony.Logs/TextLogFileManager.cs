@@ -13,6 +13,16 @@ namespace Ivony.Logs
     private static object _sync;
     private static SynchronizedFileStreamCollection _collection;
 
+
+    private static bool _autoFlush = true;
+
+    public static bool AutoFlush
+    {
+      get { return _autoFlush; }
+      set { lock ( _sync ) _autoFlush = value; }
+    }
+
+
     static TextLogFileManager()
     {
       _sync = new object();
@@ -52,6 +62,8 @@ namespace Ivony.Logs
       lock ( stream.SyncRoot )
       {
         stream.GetWriter( encoding ).Write( content );
+        if ( AutoFlush )
+          stream.Flush();
       }
     }
 
