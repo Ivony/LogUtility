@@ -19,6 +19,6 @@ namespace Ivony.Logs
     /// <param name="type">参考的日志类型</param>
     /// <param name="source">参考的日志来源</param>
     /// <returns>LogMeta 数据</returns>
-    LogMeta GetLogMeta( LogType type = null, LogSource source = null );
+    LogMeta GetLogMeta( LogMeta metaData );
   }
 }

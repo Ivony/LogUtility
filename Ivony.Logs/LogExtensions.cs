@@ -120,7 +120,7 @@ namespace Ivony.Logs
 
       var provider = logger as ILogMetaProvider;
       if ( provider != null )
-        return provider.GetLogMeta( type: type );
+        return provider.GetLogMeta( new LogMeta().SetMetaData( type ) );
 
       var meta = LogMeta.Blank;
       meta.Type = type;

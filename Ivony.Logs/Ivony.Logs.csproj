@@ -9,9 +9,10 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Ivony.Logs</RootNamespace>
     <AssemblyName>Ivony.Logs</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -22,6 +23,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\Debug\Ivony.Logs.XML</DocumentationFile>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -31,6 +33,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\Release\Ivony.Logs.XML</DocumentationFile>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -51,7 +54,10 @@
     <Compile Include="LogFilenameStrategy.cs" />
     <Compile Include="LogFilter.cs" />
     <Compile Include="LogFilterExtensions.cs" />
+    <Compile Include="LoggerWithFilter.cs" />
     <Compile Include="LoggerWithSource.cs" />
+    <Compile Include="LogMetaExtensions.cs" />
+    <Compile Include="LogScope.cs" />
     <Compile Include="LogSourceNameRestrictFilter.cs" />
     <Compile Include="PipedLogger.cs" />
     <Compile Include="TextFileLogger.cs" />

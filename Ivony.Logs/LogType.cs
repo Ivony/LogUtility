@@ -7,7 +7,7 @@ namespace Ivony.Logs
 {
 
   /// <summary>
-  /// 日志类别
+  /// 定义日志类别的抽象
   /// </summary>
   public abstract class LogType
   {
@@ -130,13 +130,13 @@ namespace Ivony.Logs
 
 
     /// <summary>信息类别，代表一般日志信息</summary>
-    public static readonly LogType Info       = new BuiltInLogType( "Infomation", 1000, new Guid( "{185D55AC-9E39-4331-9988-1EE8D3804E83}" ) );
+    public static readonly LogType Info = new BuiltInLogType( "Infomation", 1000, new Guid( "{185D55AC-9E39-4331-9988-1EE8D3804E83}" ) );
     /// <summary>警告信息类别，代表系统可能存在问题的信息</summary>
-    public static readonly LogType Warning    = new BuiltInLogType( "Warnning", 2000, new Guid( "{3E35B201-01FD-481E-9BB8-62286137AF76}" ) );
+    public static readonly LogType Warning = new BuiltInLogType( "Warnning", 2000, new Guid( "{3E35B201-01FD-481E-9BB8-62286137AF76}" ) );
     /// <summary>错误信息类别，代表系统出现了错误的日志信息</summary>
-    public static readonly LogType Error      = new BuiltInLogType( "Error", 3000, new Guid( "{93C31802-5A3E-4E6F-A2CB-0C8DDAEA2D65}" ) );
+    public static readonly LogType Error = new BuiltInLogType( "Error", 3000, new Guid( "{93C31802-5A3E-4E6F-A2CB-0C8DDAEA2D65}" ) );
     /// <summary>异常信息类别，代表系统出现了未能处理的异常信息</summary>
-    public static readonly LogType Exception  = new BuiltInLogType( "Exception", 4000, new Guid( "{83C1A0D8-C0ED-4A9C-848E-26BD7E8600A4}" ) );
+    public static readonly LogType Exception = new BuiltInLogType( "Exception", 4000, new Guid( "{83C1A0D8-C0ED-4A9C-848E-26BD7E8600A4}" ) );
     /// <summary>致命错误类别，代表系统出现了严重的无法挽回的错误信息</summary>
     public static readonly LogType FatalError = new BuiltInLogType( "Fatal", 5000, new Guid( "{1D7001EB-50B9-4788-BFE5-86A641DB439F}" ) );
     /// <summary>系统崩溃错误类别，代表系统已经或者而即将崩溃的错误信息</summary>

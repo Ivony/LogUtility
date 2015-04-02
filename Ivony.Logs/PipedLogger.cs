@@ -50,12 +50,11 @@ namespace Ivony.Logs
 
 
 
-
     /// <summary>
     /// 重写 LogEntry 方法，先交由内联日志记录器记录
     /// </summary>
     /// <param name="entry">要记录的日志条目</param>
-    public override void LogEntry( LogEntry entry )
+    protected override void WriteLog( LogEntry entry )
     {
       if ( InnerLogger == null )
         throw new InvalidOperationException();

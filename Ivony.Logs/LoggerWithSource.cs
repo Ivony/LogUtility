@@ -25,13 +25,9 @@ namespace Ivony.Logs
 
 
 
-    public LogMeta GetLogMeta( LogType type = null, LogSource source = null )
+    public LogMeta GetLogMeta( LogMeta meta )
     {
-      return new LogMeta()
-      {
-        Source = Source,
-        Type = type
-      };
+      return meta.SetMetaData( Source );
     }
   }
 }
