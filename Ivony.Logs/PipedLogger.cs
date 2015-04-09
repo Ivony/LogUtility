@@ -79,6 +79,10 @@ namespace Ivony.Logs
       base.LogEntry( entry );
     }
 
+    public override void LogEntry( LogEntry entry )
+    {
+    }
+
 
 
     /// <summary>
