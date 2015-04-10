@@ -6,6 +6,11 @@ using System.Threading.Tasks;
 
 namespace Ivony.Logs
 {
+
+
+  /// <summary>
+  /// 提供 LogMeta 的一些帮助方法
+  /// </summary>
   public static class LogMetaExtensions
   {
 

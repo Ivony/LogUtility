@@ -54,8 +54,7 @@
     <Compile Include="LogFilenameStrategy.cs" />
     <Compile Include="LogFilter.cs" />
     <Compile Include="LogFilterExtensions.cs" />
-    <Compile Include="LoggerWithFilter.cs" />
-    <Compile Include="LoggerWithSource.cs" />
+    <Compile Include="LoggerWrapperExtensions.cs" />
     <Compile Include="LogMetaExtensions.cs" />
     <Compile Include="LogScope.cs" />
     <Compile Include="LogSourceNameRestrictFilter.cs" />

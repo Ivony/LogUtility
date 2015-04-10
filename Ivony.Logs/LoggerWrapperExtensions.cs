@@ -17,11 +17,15 @@ namespace Ivony.Logs
     private class LoggerWithFilter : Logger
     {
 
+
+      private LogFilter _filter;
+
       public LoggerWithFilter( Logger logger, LogFilter filter )
-        : base( filter )
       {
         Contract.Assert( logger != null );
         Contract.Assert( filter != null );
+
+        _filter = filter;
 
         InnerLogger = logger;
       }
@@ -34,16 +38,17 @@ namespace Ivony.Logs
       }
 
 
-      protected override void WriteLog( LogEntry entry )
+      public override void LogEntry( LogEntry entry )
       {
-        InnerLogger.LogEntry( entry );
+        if ( _filter.Writable( entry ) )
+          InnerLogger.LogEntry( entry );
       }
     }
 
 
 
 
-    public Logger WithFilter( this Logger logger, LogFilter filter )
+    public static Logger WithFilter( this Logger logger, LogFilter filter )
     {
       if ( logger == null )
         return null;
@@ -78,7 +83,7 @@ namespace Ivony.Logs
 
 
 
-      protected override void WriteLog( LogEntry entry )
+      public override void LogEntry( LogEntry entry )
       {
         entry.MetaData.SetMetaData( Source );
         InnerLogger.LogEntry( entry );

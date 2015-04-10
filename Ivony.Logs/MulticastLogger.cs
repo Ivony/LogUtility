@@ -59,7 +59,7 @@ namespace Ivony.Logs
     /// 对所有的日志记录器同时写入日志条目
     /// </summary>
     /// <param name="entry">要记录的日志条目</param>
-    protected override void WriteLog( LogEntry entry )
+    public override void LogEntry( LogEntry entry )
     {
 
       List<Exception> exceptions = new List<Exception>();

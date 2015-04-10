@@ -6,20 +6,12 @@ using System.Text;
 namespace Ivony.Logs
 {
 
-  
+
   /// <summary>
   /// 代表一个不将日志记录到任何地方的日志记录器
   /// </summary>
   public sealed class BlankLogger : Logger
   {
-    /// <summary>
-    /// 重写 WriteLog 方法，什么事都不干。
-    /// </summary>
-    protected override void WriteLog( LogEntry entry )
-    {
-      return;
-    }
-
 
     /// <summary>
     /// 重写 LogEntry 方法，什么事都不干。

@@ -13,12 +13,12 @@ namespace Ivony.Logs
   {
 
 
-    
+
     /// <summary>
     /// 创建 LogCollection 对象
     /// </summary>
     /// <param name="filter"></param>
-    public LogCollection( LogFilter filter = null ) : base( filter ) { }
+    public LogCollection() { }
 
 
 
@@ -29,7 +29,7 @@ namespace Ivony.Logs
     /// 重写 WriteLog 方法记录日志
     /// </summary>
     /// <param name="entry">要记录的日志条目</param>
-    protected override void WriteLog( LogEntry entry )
+    public override void LogEntry( LogEntry entry )
     {
       lock ( SyncRoot )
       {

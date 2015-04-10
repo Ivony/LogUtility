@@ -23,7 +23,6 @@ namespace Ivony.Logs
     /// <param name="filter">日志筛选器</param>
     /// <param name="timezone">时区信息（默认为UTC-0）</param>
     protected TextLogger( LogFilter filter = null, TimeZoneInfo timezone = null )
-      : base( filter )
     {
       _timezone = timezone ?? TimeZoneInfo.Utc;
     }
@@ -35,7 +34,7 @@ namespace Ivony.Logs
     /// 写入一条日志信息
     /// </summary>
     /// <param name="entry"></param>
-    protected override void WriteLog( LogEntry entry )
+    public override void LogEntry( LogEntry entry )
     {
       Write( entry, GetPadding( entry ), entry.Message );
     }
