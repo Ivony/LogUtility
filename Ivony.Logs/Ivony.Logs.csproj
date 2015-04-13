@@ -53,7 +53,6 @@
     <Compile Include="LogFileCycles.cs" />
     <Compile Include="LogFilenameStrategy.cs" />
     <Compile Include="LogFilter.cs" />
-    <Compile Include="LogFilterExtensions.cs" />
     <Compile Include="LoggerWrapperExtensions.cs" />
     <Compile Include="LogMetaExtensions.cs" />
     <Compile Include="LogScope.cs" />
