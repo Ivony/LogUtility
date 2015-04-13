@@ -14,6 +14,11 @@ namespace Ivony.Logs
   public static class LogMetaExtensions
   {
 
+    /// <summary>
+    /// 获取日志来源信息
+    /// </summary>
+    /// <param name="entry"></param>
+    /// <returns></returns>
     public static LogSource LogSource( this LogEntry entry )
     {
       if ( entry == null )
@@ -22,6 +27,11 @@ namespace Ivony.Logs
       return LogSource( entry.MetaData );
     }
 
+    /// <summary>
+    /// 获取日志来源信息
+    /// </summary>
+    /// <param name="metaData"></param>
+    /// <returns></returns>
     public static LogSource LogSource( this LogMeta metaData )
     {
       if ( metaData == null )
@@ -31,6 +41,11 @@ namespace Ivony.Logs
     }
 
 
+    /// <summary>
+    /// 获取日志类型信息
+    /// </summary>
+    /// <param name="entry"></param>
+    /// <returns></returns>
     public static LogType LogType( this LogEntry entry )
     {
       if ( entry == null )
@@ -39,6 +54,11 @@ namespace Ivony.Logs
       return LogType( entry.MetaData );
     }
 
+    /// <summary>
+    /// 获取日志类型信息
+    /// </summary>
+    /// <param name="metaData"></param>
+    /// <returns></returns>
     public static LogType LogType( this LogMeta metaData )
     {
       if ( metaData == null )
