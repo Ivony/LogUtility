@@ -84,18 +84,6 @@ namespace Ivony.Logs
     }
 
 
-    /// <summary>
-    /// 日志来源
-    /// </summary>
-    public LogSource Source { get; set; }
-
-    /// <summary>
-    /// 日志类型
-    /// </summary>
-    public LogType Type { get; set; }
-
-
-
     private static readonly LogMeta _blank = new LogMeta();
 
 

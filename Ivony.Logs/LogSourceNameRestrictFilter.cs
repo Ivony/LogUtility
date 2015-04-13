@@ -47,7 +47,7 @@ namespace Ivony.Logs
     /// <returns>日志条目是否由指定的日志源产生</returns>
     public override bool Writable( LogEntry entry )
     {
-      var source = entry.MetaData.Source;
+      var source = entry.MetaData.LogSource();
 
       if ( source == null )
         return false;

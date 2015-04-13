@@ -120,7 +120,7 @@ namespace Ivony.Logs
     /// <returns>当前日志消息的填充</returns>
     protected virtual string GetPadding( LogEntry entry )
     {
-      return GetTypePrefix( entry.MetaData.Type ) + " " + GetDateTime( entry ).ToString( DateTimeFormatString ) + " ";
+      return GetTypePrefix( entry.LogType() ) + " " + GetDateTime( entry ).ToString( DateTimeFormatString ) + " ";
     }
 
     /// <summary>

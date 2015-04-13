@@ -253,7 +253,7 @@ namespace Ivony.Logs
 
       public override bool Writable( LogEntry entry )
       {
-        var serverity = entry.MetaData.Type.Serverity;
+        var serverity = entry.LogType().Serverity;
 
         return serverity >= MinServerity && serverity < MaxServerity;
 
@@ -278,7 +278,7 @@ namespace Ivony.Logs
 
       public override bool Writable( LogEntry entry )
       {
-        return LogType.Equals( entry.MetaData.Type );
+        return LogType.Equals( entry.LogType() );
       }
     }
 
