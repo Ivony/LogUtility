@@ -17,7 +17,6 @@ namespace Ivony.Logs
     /// <summary>
     /// 创建 LogCollection 对象
     /// </summary>
-    /// <param name="filter"></param>
     public LogCollection() { }
 
 
