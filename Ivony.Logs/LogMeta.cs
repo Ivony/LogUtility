@@ -23,6 +23,7 @@ namespace Ivony.Logs
     /// </summary>
     public LogMeta()
     {
+      data = new Dictionary<Type, object>();
       SetMetaData( LogType.Info );
     }
 
