@@ -117,10 +117,7 @@ namespace Ivony.Logs
     {
       Contract.Assert( logger != null );
 
-
-      var meta = LogMeta.Blank;
-      meta = meta.SetMetaData( type );
-      meta = meta.SetMetaData( LogScope.CurrentScope );
+      var meta = LogMeta.GetDefaultMeta().SetMetaData( type );
 
 
       var provider = logger as ILogMetaProvider;

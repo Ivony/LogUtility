@@ -14,6 +14,10 @@ namespace Ivony.Logs
   public class LogScope : IDisposable
   {
 
+    /// <summary>
+    /// 创建 LogScope 实例
+    /// </summary>
+    /// <param name="name">范畴名称</param>
     protected LogScope( string name )
     {
       if ( name == null )
@@ -34,7 +38,7 @@ namespace Ivony.Logs
 
 
 
-    private static string logScopeContextName = "log-scope";
+    private static readonly string logScopeContextName = "log-scope";
 
     /// <summary>
     /// 获取当前范畴对象
@@ -87,7 +91,6 @@ namespace Ivony.Logs
     /// <returns></returns>
     public static LogScope EnterScope( LogScope scope )
     {
-
       if ( scope == null )
         throw new ArgumentNullException( "scope" );
 
@@ -107,26 +110,47 @@ namespace Ivony.Logs
     /// <returns></returns>
     public static LogScope LeaveScope( LogScope scope )
     {
+
+      if ( scope == null )
+        throw new ArgumentNullException( "scope" );
+
       var current = CurrentScope;
 
-      if ( scope == RootScope )
-        return CurrentScope = RootScope;
-
-      while ( current != scope && current != RootScope )
+      while ( current != scope )
+      {
+        current._leaved = true;
         current = current.Parent;
 
+        if ( current == null )
+          return null;
+      }
 
-      if ( current == RootScope )
-        return null;
-
-      else
-        return CurrentScope = current.Parent;
+      return CurrentScope = current.Parent ?? RootScope;
     }
 
 
-    public void Dispose()
+    private readonly object _sync = new object();
+
+    private bool _leaved = false;
+
+    /// <summary>
+    /// 离开当前范畴
+    /// </summary>
+    public void Leave()
     {
-      LeaveScope( this );
+      lock ( _sync )
+      {
+        if ( _leaved == false )
+        {
+          LeaveScope( this );
+        }
+      }
+    }
+
+
+    void IDisposable.Dispose()
+    {
+      Leave();
     }
   }
 }

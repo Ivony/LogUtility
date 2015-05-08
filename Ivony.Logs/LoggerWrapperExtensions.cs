@@ -93,7 +93,7 @@ namespace Ivony.Logs
 
       public override void LogEntry( LogEntry entry )
       {
-        entry.MetaData.SetMetaData( Source );
+        entry = entry.SetMetaData( Source );
         InnerLogger.LogEntry( entry );
       }
     }
@@ -116,6 +116,5 @@ namespace Ivony.Logs
       return new LoggerWithSource( logger, source );
 
     }
-
   }
 }

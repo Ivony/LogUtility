@@ -12,8 +12,6 @@ namespace Ivony.Logs
   public sealed class LogMeta
   {
 
-    private object sybc = new object();
-
     private Dictionary<Type, object> data;
 
 
@@ -21,11 +19,22 @@ namespace Ivony.Logs
     /// <summary>
     /// 创建 LogMeta 对象
     /// </summary>
-    public LogMeta()
+    private LogMeta()
     {
       data = new Dictionary<Type, object>();
-      SetMetaData( LogType.Info );
     }
+
+
+    /// <summary>
+    /// 获取默认日志元数据
+    /// </summary>
+    /// <returns></returns>
+    public static LogMeta GetDefaultMeta()
+    {
+      return new LogMeta().SetMetaData( LogType.Info, LogScope.CurrentScope );
+    }
+
+
 
 
     /// <summary>
@@ -39,6 +48,15 @@ namespace Ivony.Logs
 
 
 
+
+    private LogMeta( Dictionary<Type, object> data )
+    {
+      this.data = data;
+    }
+
+
+
+
     /// <summary>
     /// 获取指定类型的元数据
     /// </summary>
@@ -48,11 +66,8 @@ namespace Ivony.Logs
     {
       var type = GetRootType( typeof( T ) );
 
-      lock ( sybc )
-      {
-        if ( data.ContainsKey( type ) )
-          return data[type] as T;
-      }
+      if ( data.ContainsKey( type ) )
+        return data[type] as T;
 
       return null;
     }
@@ -61,41 +76,29 @@ namespace Ivony.Logs
     /// <summary>
     /// 设置一个元数据
     /// </summary>
-    /// <typeparam name="T">元数据类型</typeparam>
     /// <param name="metaData">元数据对象</param>
-    /// <returns>LogMeta 对象自身，便于链式调用</returns>
-    public LogMeta SetMetaData<T>( T metaData ) where T : class
+    /// <returns>设置后的日志元数据</returns>
+    public LogMeta SetMetaData( params object[] metaData )
     {
-      var type = GetRootType( typeof( T ) );
-      lock ( sybc )
-      {
-        data[type] = metaData;
-      }
+      var data = this.data;
 
-      return this;
+      foreach ( var item in metaData )
+        data[GetRootType( item.GetType() )] = item;
+
+      return new LogMeta( data );
     }
+
 
     private Type GetRootType( Type type )
     {
+      if ( type.IsValueType )
+        throw new InvalidOperationException( "值类型对象不能作为日志元数据储存" );
+
       if ( type.BaseType != typeof( object ) )
         return GetRootType( type );
 
       else
         return type;
     }
-
-
-    private static readonly LogMeta _blank = new LogMeta();
-
-
-    /// <summary>
-    /// 获取空白日志元数据
-    /// </summary>
-    public static LogMeta Blank
-    {
-      get { return _blank; }
-    }
-
-
   }
 }
