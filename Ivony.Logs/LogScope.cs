@@ -28,6 +28,8 @@ namespace Ivony.Logs
 
       if ( name.Contains( '/' ) )
         throw new ArgumentException( "范畴名称不能包含 \"/\" 字符", "name" );
+
+      Name = name;
     }
 
     private LogScope()
@@ -35,6 +37,12 @@ namespace Ivony.Logs
 
     }
 
+
+    public string Name
+    {
+      get;
+      private set;
+    }
 
 
 
@@ -46,7 +54,13 @@ namespace Ivony.Logs
     public static LogScope CurrentScope
     {
       get { return CallContext.LogicalGetData( logScopeContextName ) as LogScope ?? RootScope; }
-      private set { CallContext.LogicalSetData( logScopeContextName, value ); }
+      private set
+      {
+        if ( value == null || value == RootScope )
+          CallContext.FreeNamedDataSlot( logScopeContextName );
+        else
+          CallContext.LogicalSetData( logScopeContextName, value );
+      }
     }
 
 
@@ -125,7 +139,7 @@ namespace Ivony.Logs
           return null;
       }
 
-      return CurrentScope = current.Parent ?? RootScope;
+      return CurrentScope = current.Parent;
     }
 
 
