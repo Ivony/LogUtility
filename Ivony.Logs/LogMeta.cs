@@ -95,7 +95,7 @@ namespace Ivony.Logs
         throw new InvalidOperationException( "值类型对象不能作为日志元数据储存" );
 
       if ( type.BaseType != typeof( object ) )
-        return GetRootType( type );
+        return GetRootType( type.BaseType );
 
       else
         return type;
