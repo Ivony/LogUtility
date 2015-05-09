@@ -46,6 +46,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AsyncLogger.cs" />
     <Compile Include="BlankLogger.cs" />
     <Compile Include="ConsoleLogger.cs" />
     <Compile Include="ILogMetaProvider.cs" />
