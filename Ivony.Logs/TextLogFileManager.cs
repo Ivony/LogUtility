@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Ivony.Logs
 {
@@ -54,12 +55,11 @@ namespace Ivony.Logs
     /// <param name="content">文本内容</param>
     /// <param name="encoding">文本编码</param>
     /// <param name="flush">在写入后是否立即刷新日志流</param>
-    public static void WriteText( string filepath, string content, Encoding encoding, bool flush = false )
+    public static Task WriteTextAsync( string filepath, string content, Encoding encoding, bool flush = false )
     {
       encoding = encoding ?? DefaultEncoding;
 
-      var stream = GetFileStream( filepath );
-      WriteText( stream, content, encoding, flush );
+      return GetFileStream( filepath ).WriteTextAsync( content, encoding, AutoFlush || flush );
     }
 
 
@@ -82,16 +82,6 @@ namespace Ivony.Logs
       }
     }
 
-
-    private static void WriteText( SynchronizedFileStream stream, string content, Encoding encoding, bool flush )
-    {
-      lock ( stream.SyncRoot )
-      {
-        stream.GetWriter( encoding ).Write( content );
-        if ( AutoFlush || flush )
-          stream.Flush();
-      }
-    }
 
 
     /// <summary>
@@ -164,26 +154,57 @@ namespace Ivony.Logs
 
       private StreamWriter writer;
 
-      public TextWriter GetWriter( Encoding encoding )
+
+      private Task task;
+
+
+      public async Task WriteTextAsync( string content, Encoding encoding, bool flush )
       {
 
-        if ( writer != null )
-        {
-          if ( writer.Encoding.Equals( encoding ) )
-            return writer;
 
-#if net45
-          writer.Dispose();
-#else
-          writer.Dispose();
-          FileStream = OpenFile( Filepath );
-#endif
+      begin:
+
+        if ( task != null )
+          await task;
+
+        lock ( SyncRoot )
+        {
+          if ( task != null )
+            goto begin;
+
+          var writer = GetWriter( encoding );
+          task = WriteTextAsync( writer, content, flush );
         }
-#if net45
-        return writer = new StreamWriter( FileStream, encoding, 1024, true );
-#else
-        return writer = new StreamWriter( FileStream, encoding );
-#endif
+
+
+        await task;
+      }
+
+      private async Task WriteTextAsync( TextWriter writer, string content, bool flush )
+      {
+        await writer.WriteAsync( content );
+        if ( flush )
+          await writer.FlushAsync();
+      }
+
+
+
+      private TextWriter GetWriter( Encoding encoding )
+      {
+
+        lock ( SyncRoot )
+        {
+          if ( writer != null )
+          {
+            if ( writer.Encoding.Equals( encoding ) )
+              return writer;
+
+            writer.Dispose();
+            FileStream = OpenFile( Filepath );
+          }
+
+          return writer = new StreamWriter( FileStream, encoding, 1024, true );
+        }
       }
 
 

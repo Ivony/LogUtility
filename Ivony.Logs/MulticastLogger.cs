@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Ivony.Logs
 {
@@ -10,7 +11,7 @@ namespace Ivony.Logs
   /// <summary>
   /// 多播日志记录器
   /// </summary>
-  public class MulticastLogger : Logger
+  public class MulticastLogger : AsyncLogger
   {
 
 
@@ -18,16 +19,8 @@ namespace Ivony.Logs
     /// 创建一个多播日志记录器
     /// </summary>
     /// <param name="loggers">需要记录日志的日志记录器</param>
-    public MulticastLogger( params Logger[] loggers ) : this( true, loggers ) { }
-
-    /// <summary>
-    /// 创建一个多播日志记录器
-    /// </summary>
-    /// <param name="throwExceptions">当任何一个日志记录器抛出异常时，是否应当中断日志记录并抛出异常</param>
-    /// <param name="loggers">需要记录日志的日志记录器</param>
-    public MulticastLogger( bool throwExceptions, params Logger[] loggers )
+    public MulticastLogger( params Logger[] loggers )
     {
-      ThrowExceptions = throwExceptions;
       Loggers = new ReadOnlyCollection<Logger>( loggers.SelectMany( ExpandMulticast ).ToArray() );
     }
 
@@ -47,11 +40,6 @@ namespace Ivony.Logs
     /// </summary>
     public ICollection<Logger> Loggers { get; private set; }
 
-    /// <summary>
-    /// 当记录日志出现异常时是否中断日志记录并抛出异常
-    /// </summary>
-    public bool ThrowExceptions { get; private set; }
-
 
 
 
@@ -61,25 +49,6 @@ namespace Ivony.Logs
     /// <param name="entry">要记录的日志条目</param>
     public override void LogEntry( LogEntry entry )
     {
-
-      List<Exception> exceptions = new List<Exception>();
-
-      foreach ( var logger in Loggers )
-      {
-        try
-        {
-          logger.LogEntry( entry );
-        }
-        catch ( Exception e )
-        {
-
-          if ( ThrowExceptions )
-            exceptions.Add( e );
-        }
-      }
-
-      if ( exceptions.Any() )
-        throw new AggregateException( exceptions.ToArray() );
     }
 
 
@@ -92,6 +61,43 @@ namespace Ivony.Logs
       {
         logger.Dispose();
       }
+    }
+
+    /// <summary>
+    /// 异步执行日志记录
+    /// </summary>
+    /// <param name="entry">要记录的日志条目</param>
+    /// <returns>用于等待异步执行完成的 Task 对象</returns>
+    public override Task LogEntryAsync( LogEntry entry )
+    {
+      return SequentialLogEntry( entry );
+    }
+
+
+    private async Task SequentialLogEntry( LogEntry entry )
+    {
+      List<Exception> exceptions = new List<Exception>();
+
+      foreach ( var logger in Loggers )
+      {
+        try
+        {
+          var asyncLogger = logger as AsyncLogger;
+
+          if ( asyncLogger == null )
+            logger.LogEntry( entry );
+
+          else
+            await asyncLogger.LogEntryAsync( entry );
+        }
+        catch ( Exception e )
+        {
+          exceptions.Add( e );
+        }
+      }
+
+      if ( exceptions.Any() )
+        throw new AggregateException( exceptions.ToArray() );
     }
   }
 }

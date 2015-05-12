@@ -13,7 +13,7 @@ namespace Ivony.Logs
   /// <summary>
   /// 文本日志记录器基类，将日志信息以文本形式记录的所有记录器的基类
   /// </summary>
-  public abstract class TextLogger : Logger
+  public abstract class AsyncTextLogger : AsyncLogger
   {
 
 
@@ -22,7 +22,7 @@ namespace Ivony.Logs
     /// </summary>
     /// <param name="filter">日志筛选器</param>
     /// <param name="timezone">时区信息（默认为UTC-0）</param>
-    protected TextLogger( LogFilter filter = null, TimeZoneInfo timezone = null )
+    protected AsyncTextLogger( LogFilter filter = null, TimeZoneInfo timezone = null )
     {
       _timezone = timezone ?? TimeZoneInfo.Utc;
     }
@@ -31,12 +31,12 @@ namespace Ivony.Logs
 
 
     /// <summary>
-    /// 写入一条日志信息
+    /// 异步写入一条日志信息
     /// </summary>
     /// <param name="entry"></param>
-    public override void LogEntry( LogEntry entry )
+    public override Task LogEntryAsync( LogEntry entry )
     {
-      Write( entry, GetPadding( entry ), entry.Message );
+      return WriteAsync( entry, GetPadding( entry ), entry.Message );
     }
 
 
@@ -58,7 +58,7 @@ namespace Ivony.Logs
     /// </summary>
     /// <param name="entry">要写入的日志条目</param>
     /// <param name="contents">要写入的日志内容</param>
-    protected abstract void WriteLogMessage( LogEntry entry, string[] contents );
+    protected abstract Task WriteLogMessageAsync( LogEntry entry, string[] contents );
 
 
 
@@ -71,7 +71,7 @@ namespace Ivony.Logs
     /// <param name="entry">要写入的日志条目</param>
     /// <param name="padding">填充字符串，将会添加在每一行日志的前面</param>
     /// <param name="message">要写入的日志消息</param>
-    protected virtual void Write( LogEntry entry, string padding, string message )
+    protected virtual Task WriteAsync( LogEntry entry, string padding, string message )
     {
 
 
@@ -81,8 +81,7 @@ namespace Ivony.Logs
 
       if ( messageLines.Length == 1 )
       {
-        WriteLogMessage( entry, new[] { padding + " " + messageLines[0] } );
-        return;
+        return WriteLogMessageAsync( entry, new[] { padding + " " + messageLines[0] } );
       }
 
       for ( int i = 0; i < messageLines.Length; i++ )
@@ -95,7 +94,7 @@ namespace Ivony.Logs
           messageLines[i] = padding + "|" + messageLines[i];
       }
 
-      WriteLogMessage( entry, messageLines );
+      return WriteLogMessageAsync( entry, messageLines );
     }
 
 

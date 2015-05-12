@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Ivony.Logs
 {
@@ -10,7 +11,7 @@ namespace Ivony.Logs
   /// <summary>
   /// 文本文件日志记录器基类
   /// </summary>
-  public abstract class TextFileLoggerBase : TextLogger
+  public abstract class TextFileLoggerBase : AsyncTextLogger
   {
 
 
@@ -48,11 +49,11 @@ namespace Ivony.Logs
 
 
     /// <summary>
-    /// 重写 WriteLogMessage 方法将日志写入文本文件
+    /// 重写 WriteLogMessageAsync 方法将日志写入文本文件
     /// </summary>
     /// <param name="entry">日志条目对象</param>
     /// <param name="lines">要写入的文本行</param>
-    protected override void WriteLogMessage( LogEntry entry, string[] lines )
+    protected override Task WriteLogMessageAsync( LogEntry entry, string[] lines )
     {
       var path = GetFilepath( entry );
 
@@ -63,7 +64,7 @@ namespace Ivony.Logs
         build.Append( Environment.NewLine );
       }
 
-      TextLogFileManager.WriteText( path, build.ToString(), Encoding, entry.LogType().Serverity >= LogType.Error.Serverity );
+      return TextLogFileManager.WriteTextAsync( path, build.ToString(), Encoding, entry.LogType().Serverity >= LogType.Error.Serverity );
     }
 
 

@@ -11,7 +11,7 @@ namespace Ivony.Logs
   /// <summary>
   /// 将日志信息输出到控制台的日志记录器
   /// </summary>
-  public class ConsoleLogger : TextLogger
+  public class ConsoleLogger : AsyncTextLogger
   {
 
 
@@ -29,13 +29,15 @@ namespace Ivony.Logs
     /// </summary>
     /// <param name="entry">日志条目</param>
     /// <param name="contents">要显示的文本内容</param>
-    protected override void WriteLogMessage( LogEntry entry, string[] contents )
+    protected override Task WriteLogMessageAsync( LogEntry entry, string[] contents )
     {
       lock ( _sync )
       {
         foreach ( var line in contents )
           Console.WriteLine( line );
       }
+
+      return Task.Run( () => { } );
     }
 
     /// <summary>
