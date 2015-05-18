@@ -116,5 +116,45 @@ namespace Ivony.Logs
       return new LoggerWithSource( logger, source );
 
     }
+
+
+    private sealed class IgnoreErrorLogger : Logger
+    {
+
+      private Logger _logger;
+
+      public IgnoreErrorLogger( Logger logger )
+      {
+        _logger = logger;
+      }
+
+      public override void LogEntry( LogEntry entry )
+      {
+        try
+        {
+          _logger.LogEntry( entry );
+        }
+        catch { }
+      }
+    }
+
+
+    /// <summary>
+    /// 创建一个新的日志记录器，忽略记录日志中出现的任何异常
+    /// </summary>
+    /// <param name="logger">用于记录异常的日志记录器</param>
+    /// <returns></returns>
+    public static Logger IgnoreError( this Logger logger )
+    {
+      if ( logger == null )
+        throw new ArgumentNullException( "logger" );
+
+      if ( logger is IgnoreErrorLogger )
+        return logger;
+
+      return new IgnoreErrorLogger( logger );
+    }
+
+
   }
 }
