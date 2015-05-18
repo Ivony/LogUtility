@@ -85,12 +85,7 @@ namespace Ivony.Logs
 
     private static void WriteText( SynchronizedFileStream stream, string content, Encoding encoding, bool flush )
     {
-      lock ( stream.SyncRoot )
-      {
-        stream.GetWriter( encoding ).Write( content );
-        if ( AutoFlush || flush )
-          stream.Flush();
-      }
+      stream.WriteText( content, encoding, AutoFlush || flush );
     }
 
 
@@ -151,7 +146,6 @@ namespace Ivony.Logs
       public SynchronizedFileStream( string filepath )
       {
         Filepath = filepath;
-        FileStream = OpenFile( filepath );
         SyncRoot = new object();
       }
 
@@ -159,32 +153,45 @@ namespace Ivony.Logs
 
       public object SyncRoot { get; private set; }
 
-      internal FileStream FileStream { get; private set; }
 
 
       private StreamWriter writer;
 
-      public TextWriter GetWriter( Encoding encoding )
+      public void WriteText( string text, Encoding encoding, bool flush )
       {
 
-        if ( writer != null )
+        lock ( SyncRoot )
         {
-          if ( writer.Encoding.Equals( encoding ) )
-            return writer;
 
-#if net45
-          writer.Dispose();
-#else
-          writer.Dispose();
-          FileStream = OpenFile( Filepath );
-#endif
+          if ( writer != null && writer.Encoding.Equals( encoding ) == false )
+          {
+            writer.Dispose();
+            writer = null;
+          }
+
+          if ( writer == null )
+            writer = new StreamWriter( OpenFile( Filepath ), encoding );
+
+
+          lock ( SyncRoot )
+          {
+            try
+            {
+              writer.Write( text );
+
+            }
+            finally
+            {
+              if ( flush )
+              {
+                writer.Dispose();
+              }
+
+            }
+          }
         }
-#if net45
-        return writer = new StreamWriter( FileStream, encoding, 1024, true );
-#else
-        return writer = new StreamWriter( FileStream, encoding );
-#endif
       }
+
 
 
       private static FileStream OpenFile( string filepath )
@@ -195,8 +202,16 @@ namespace Ivony.Logs
 
       public void Flush()
       {
-        if ( writer != null )
-          writer.Flush();
+        lock ( SyncRoot )
+        {
+          if ( writer != null )
+          {
+            writer.Flush();
+            writer.Dispose();
+
+            writer = null;
+          }
+        }
       }
 
 
@@ -204,7 +219,6 @@ namespace Ivony.Logs
       {
         writer.Dispose();
         writer = null;
-        FileStream = null;
         Filepath = null;
       }
     }
