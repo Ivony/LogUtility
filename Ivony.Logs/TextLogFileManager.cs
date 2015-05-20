@@ -185,6 +185,7 @@ namespace Ivony.Logs
               if ( flush )
               {
                 writer.Dispose();
+                writer = null;
               }
 
             }
@@ -206,9 +207,7 @@ namespace Ivony.Logs
         {
           if ( writer != null )
           {
-            writer.Flush();
             writer.Dispose();
-
             writer = null;
           }
         }
