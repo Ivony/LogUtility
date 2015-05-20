@@ -165,8 +165,7 @@ namespace Ivony.Logs
 
           if ( writer != null && writer.Encoding.Equals( encoding ) == false )
           {
-            writer.Dispose();
-            writer = null;
+            DisposeWriter();
           }
 
           if ( writer == null )
@@ -184,13 +183,18 @@ namespace Ivony.Logs
             {
               if ( flush )
               {
-                writer.Dispose();
-                writer = null;
+                DisposeWriter();
               }
 
             }
           }
         }
+      }
+
+      private void DisposeWriter()
+      {
+        writer.Dispose();
+        writer = null;
       }
 
 
@@ -207,8 +211,7 @@ namespace Ivony.Logs
         {
           if ( writer != null )
           {
-            writer.Dispose();
-            writer = null;
+            DisposeWriter();
           }
         }
       }
@@ -216,8 +219,7 @@ namespace Ivony.Logs
 
       public void Dispose()
       {
-        writer.Dispose();
-        writer = null;
+        DisposeWriter();
         Filepath = null;
       }
     }
