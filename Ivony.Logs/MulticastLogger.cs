@@ -15,28 +15,47 @@ namespace Ivony.Logs
 
 
 
+    /// <summary>
+    /// 创建多播日志记录器
+    /// </summary>
+    /// <param name="loggers">日志记录器列表</param>
     public MulticastLogger( params Logger[] loggers ) : this( true, loggers ) { }
 
+    /// <summary>
+    /// 创建多播日志记录器
+    /// </summary>
+    /// <param name="throwExceptions">当日志记录器发生异常时，是否应当抛出异常</param>
+    /// <param name="loggers">日志记录器列表</param>
     public MulticastLogger( bool throwExceptions, params Logger[] loggers )
     {
       ThrowExceptions = throwExceptions;
       Loggers = new ReadOnlyCollection<Logger>( loggers.SelectMany( ExpandMulticast ).ToArray() );
     }
 
-    private IEnumerable<Logger> ExpandMulticast( Logger logger )
+    private static IEnumerable<Logger> ExpandMulticast( Logger logger )
     {
       var multi = logger as MulticastLogger;
       if ( multi != null )
         return multi.Loggers;
+
+      else if ( logger == null )//如果有空的日志记录器混进来则忽略之。
+        return new Logger[0];
 
       else
         return new[] { logger };
     }
 
 
+    /// <summary>
+    /// 日志记录器列表
+    /// </summary>
     public ICollection<Logger> Loggers { get; private set; }
 
+    /// <summary>
+    /// 当一个或多个日志记录器出现异常时，是否应当抛出异常
+    /// </summary>
     public bool ThrowExceptions { get; private set; }
+
 
 
 

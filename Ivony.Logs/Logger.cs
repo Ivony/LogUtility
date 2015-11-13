@@ -65,6 +65,17 @@ namespace Ivony.Logs
 
     public static Logger operator +( Logger logger1, Logger logger2 )
     {
+
+      if ( logger1 == null && logger2 == null )
+        return null;
+
+      if ( logger1 == null )
+        return logger2;
+
+      if ( logger2 == null )
+        return logger1;
+
+
       return new MulticastLogger( logger1, logger2 );
     }
 
