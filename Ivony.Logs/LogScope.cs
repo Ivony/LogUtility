@@ -38,6 +38,9 @@ namespace Ivony.Logs
     }
 
 
+    /// <summary>
+    /// 范畴名称
+    /// </summary>
     public string Name
     {
       get;

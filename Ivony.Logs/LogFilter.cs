@@ -135,12 +135,13 @@ namespace Ivony.Logs
     static LogFilter()
     {
       Info = new ServerityBasedFilter( LogType.Info.Serverity, int.MaxValue );
+      ImportantInfo = new ServerityBasedFilter( LogType.ImportantInfo.Serverity, int.MaxValue );
       Warning = new ServerityBasedFilter( LogType.Warning.Serverity, int.MaxValue );
       Error = new ServerityBasedFilter( LogType.Error.Serverity, int.MaxValue );
       Exception = new ServerityBasedFilter( LogType.Exception.Serverity, int.MaxValue );
       FatalError = new ServerityBasedFilter( LogType.FatalError.Serverity, int.MaxValue );
 
-      InfoOnly = new LogTypeBasedFilter( LogType.Info );
+      InfoOnly = new LogTypeBasedFilter( LogType.Info ) | new LogTypeBasedFilter( LogType.ImportantInfo );
       WarningOnly = new LogTypeBasedFilter( LogType.Warning );
       ErrorOnly = new LogTypeBasedFilter( LogType.Error );
       ExceptionOnly = new LogTypeBasedFilter( LogType.Exception );
@@ -164,6 +165,17 @@ namespace Ivony.Logs
       get;
       private set;
     }
+
+    /// <summary>
+    /// 指定记录一般性消息以及更严重的消息的日志筛选器
+    /// </summary>
+    public static LogFilter ImportantInfo
+    {
+      get;
+      private set;
+    }
+
+
 
     /// <summary>
     /// 指定记录警告消息以及更严重的消息的日志筛选器

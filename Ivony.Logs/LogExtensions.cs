@@ -28,6 +28,19 @@ namespace Ivony.Logs
     }
 
     /// <summary>
+    /// 记录一个重要信息日志
+    /// </summary>
+    /// <param name="logger">日志记录器</param>
+    /// <param name="message">日志消息</param>
+    /// <param name="args">日志消息参数</param>
+    public static void LogImportantInfo( this Logger logger, string message, params object[] args )
+    {
+      Contract.Assert( logger != null );
+
+      LogWithCustomType( logger, LogType.ImportantInfo, message, args );
+    }
+
+    /// <summary>
     /// 记录一个警告信息
     /// </summary>
     /// <param name="logger">日志记录器</param>

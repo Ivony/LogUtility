@@ -17,6 +17,11 @@ namespace Ivony.Logs
     /// </summary>
     public abstract string Name { get; }
 
+
+    /// <summary>
+    /// 重写 ToString 方法，输出日志源名称
+    /// </summary>
+    /// <returns></returns>
     public override string ToString()
     {
       return Name;
