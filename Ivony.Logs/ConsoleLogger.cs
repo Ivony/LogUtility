@@ -33,8 +33,40 @@ namespace Ivony.Logs
     {
       lock ( _sync )
       {
+
+        var foreColor = Console.ForegroundColor;
+        var backColor = Console.BackgroundColor;
+
+        SetColor( entry );
+
         foreach ( var line in contents )
           Console.WriteLine( line );
+
+        Console.ForegroundColor = foreColor;
+        Console.BackgroundColor = backColor;
+
+      }
+    }
+
+    private void SetColor( LogEntry entry )
+    {
+
+      if ( entry.MetaData.LogType().Serverity <= LogType.Info.Serverity )
+        Console.ForegroundColor = ConsoleColor.Gray;
+
+      else if ( entry.MetaData.LogType().Serverity <= LogType.ImportantInfo.Serverity )
+        Console.ForegroundColor = ConsoleColor.White;
+
+      else if ( entry.MetaData.LogType().Serverity <= LogType.Warning.Serverity )
+        Console.ForegroundColor = ConsoleColor.Yellow;
+
+      else if ( entry.MetaData.LogType().Serverity <= LogType.Error.Serverity )
+        Console.ForegroundColor = ConsoleColor.Red;
+
+      else
+      {
+        Console.ForegroundColor = ConsoleColor.Yellow;
+        Console.BackgroundColor = ConsoleColor.Red;
       }
     }
 
