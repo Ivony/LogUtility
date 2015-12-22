@@ -149,22 +149,25 @@ namespace Ivony.Logs
       else if ( type.Serverity <= 500 )
         return " #";
 
-      else if ( type == LogType.Info || type.Serverity <= 1000 )
+      else if ( type.Serverity <= LogType.Info.Serverity )
         return "##";
 
-      else if ( type == LogType.Warning || type.Serverity <= 2000 )
+      else if ( type.Serverity <= LogType.ImportantInfo.Serverity )
+        return "#@";
+
+      else if ( type.Serverity <= LogType.Warning.Serverity )
         return "#!";
 
-      else if ( type == LogType.Error || type.Serverity <= 3000 )
+      else if ( type.Serverity <= LogType.Error.Serverity )
         return "@!";
 
-      else if ( type == LogType.Exception || type.Serverity <= 4000 )
+      else if ( type.Serverity <= LogType.Exception.Serverity )
         return "E!";
 
-      else if ( type == LogType.FatalError || type.Serverity <= 5000 )
+      else if ( type.Serverity <= LogType.FatalError.Serverity )
         return "F!";
 
-      else if ( type == LogType.CrashError || type.Serverity <= 10000 )
+      else if ( type.Serverity <= LogType.CrashError.Serverity )
         return "!!";
 
       else
