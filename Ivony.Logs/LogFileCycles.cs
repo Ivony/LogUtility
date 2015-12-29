@@ -52,9 +52,21 @@ namespace Ivony.Logs
     private static LogFilenameStrategy _monthly = new MonthlyCycle();
 
 
+    /// <summary>
+    /// 获取每日产生一个新的日志文件的日志文件名策略
+    /// </summary>
     public static LogFilenameStrategy Daily { get { return _daily; } }
+    /// <summary>
+    /// 获取每小时产生一个新的日志文件的日志文件名策略
+    /// </summary>
     public static LogFilenameStrategy Hourly { get { return _hourly; } }
+    /// <summary>
+    /// 获取每分钟产生一个新的日志文件的日志文件名策略
+    /// </summary>
     public static LogFilenameStrategy Minutely { get { return _minutely; } }
+    /// <summary>
+    /// 获取每月产生一个新的日志文件的日志文件名策略
+    /// </summary>
     public static LogFilenameStrategy Monthly { get { return _monthly; } }
 
 

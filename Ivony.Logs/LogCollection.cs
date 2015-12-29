@@ -13,31 +13,22 @@ namespace Ivony.Logs
   {
 
 
-    public LogCollection( LogFilter filter = null )
-      : base( filter )
-    {
-      SyncRoot = new object();
-    }
+
+    /// <summary>
+    /// 创建 LogCollection 对象
+    /// </summary>
+    public LogCollection() { }
 
 
 
     private List<LogEntry> _list = new List<LogEntry>();
-
-    /// <summary>
-    /// 获取用于同步的对象
-    /// </summary>
-    public object SyncRoot
-    {
-      get;
-      private set;
-    }
 
 
     /// <summary>
     /// 重写 WriteLog 方法记录日志
     /// </summary>
     /// <param name="entry">要记录的日志条目</param>
-    protected override void WriteLog( LogEntry entry )
+    public override void LogEntry( LogEntry entry )
     {
       lock ( SyncRoot )
       {

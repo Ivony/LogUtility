@@ -21,7 +21,11 @@ namespace Ivony.Logs
     /// 创建 TextLogger 对象
     /// </summary>
     /// <param name="filter">日志筛选器</param>
-    protected TextLogger( LogFilter filter = null ) : base( filter ) { }
+    /// <param name="timezone">时区信息（默认为UTC-0）</param>
+    protected TextLogger( LogFilter filter = null, TimeZoneInfo timezone = null )
+    {
+      _timezone = timezone ?? TimeZoneInfo.Utc;
+    }
 
 
 
@@ -30,7 +34,7 @@ namespace Ivony.Logs
     /// 写入一条日志信息
     /// </summary>
     /// <param name="entry"></param>
-    protected override void WriteLog( LogEntry entry )
+    public override void LogEntry( LogEntry entry )
     {
       Write( entry, GetPadding( entry ), entry.Message );
     }
@@ -52,7 +56,8 @@ namespace Ivony.Logs
     /// <summary>
     /// 派生类实现此方法写入日志
     /// </summary>
-    /// <param name="contents">日志内容行</param>
+    /// <param name="entry">要写入的日志条目</param>
+    /// <param name="contents">要写入的日志内容</param>
     protected abstract void WriteLogMessage( LogEntry entry, string[] contents );
 
 
@@ -63,8 +68,9 @@ namespace Ivony.Logs
     /// <summary>
     /// 使用指定的前缀写入多行日志
     /// </summary>
+    /// <param name="entry">要写入的日志条目</param>
     /// <param name="padding">填充字符串，将会添加在每一行日志的前面</param>
-    /// <param name="message">日志消息</param>
+    /// <param name="message">要写入的日志消息</param>
     protected virtual void Write( LogEntry entry, string padding, string message )
     {
 
@@ -114,7 +120,17 @@ namespace Ivony.Logs
     /// <returns>当前日志消息的填充</returns>
     protected virtual string GetPadding( LogEntry entry )
     {
-      return GetTypePrefix( entry.MetaData.Type ) + " " + entry.LogDate.ToString( DateTimeFormatString ) + " ";
+      return GetTypePrefix( entry.LogType() ) + " " + GetDateTime( entry ).ToString( DateTimeFormatString ) + " ";
+    }
+
+    /// <summary>
+    /// 获取转换时区后的日志记录时间
+    /// </summary>
+    /// <param name="entry">日志条目</param>
+    /// <returns>转换后的时间</returns>
+    protected DateTime GetDateTime( LogEntry entry )
+    {
+      return TimeZoneInfo.ConvertTimeFromUtc( entry.LogDate, TimeZone );
     }
 
 
@@ -133,22 +149,25 @@ namespace Ivony.Logs
       else if ( type.Serverity <= 500 )
         return " #";
 
-      else if ( type == LogType.Info || type.Serverity <= 1000 )
+      else if ( type.Serverity <= LogType.Info.Serverity )
         return "##";
 
-      else if ( type == LogType.Warning || type.Serverity <= 2000 )
+      else if ( type.Serverity <= LogType.ImportantInfo.Serverity )
+        return "#@";
+
+      else if ( type.Serverity <= LogType.Warning.Serverity )
         return "#!";
 
-      else if ( type == LogType.Error || type.Serverity <= 3000 )
+      else if ( type.Serverity <= LogType.Error.Serverity )
         return "@!";
 
-      else if ( type == LogType.Exception || type.Serverity <= 4000 )
+      else if ( type.Serverity <= LogType.Exception.Serverity )
         return "E!";
 
-      else if ( type == LogType.FatalError || type.Serverity <= 5000 )
+      else if ( type.Serverity <= LogType.FatalError.Serverity )
         return "F!";
 
-      else if ( type == LogType.CrashError || type.Serverity <= 10000 )
+      else if ( type.Serverity <= LogType.CrashError.Serverity )
         return "!!";
 
       else
@@ -156,10 +175,25 @@ namespace Ivony.Logs
     }
 
 
+    /// <summary>
+    /// 获取日期字符串格式
+    /// </summary>
     protected virtual string DateTimeFormatString
     {
       get { return "yyyy-MM-dd HH:mm:ss"; }
     }
+
+
+    private TimeZoneInfo _timezone;
+
+    /// <summary>
+    /// 获取应使用的时区信息（默认为UTC-0）
+    /// </summary>
+    public virtual TimeZoneInfo TimeZone
+    {
+      get { return _timezone; }
+    }
+
 
 
 
