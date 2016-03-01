@@ -1,4 +1,7 @@
-﻿using Ivony.Logs;
+﻿using Amazon;
+using Amazon.CloudWatchLogs;
+using Ivony.Logs;
+using Ivony.Logs.Aws;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -14,7 +17,8 @@ namespace TestConsole
     static void Main( string[] args )
     {
 
-      var logger = /*new ConsoleLogger() +*/ new TextFileLogger( @"C:\Temp\Logs\1.log" ) + new TextFileLogger( new DirectoryInfo( @"C:\Temp\Logs\Test" ) );
+      var logger = new ConsoleLogger() + new TextFileLogger( @"C:\Temp\Logs\1.log" ) + new TextFileLogger( new DirectoryInfo( @"C:\Temp\Logs\Test" ) )
+        + new CloudWatchLogger( new AmazonCloudWatchLogsClient( "AKIAIT5TCZWUB6ROTUQQ", "0HjXbLn4d6wPr0Y4Nu0xNxc2M9A3dwjLY0y8gJji", RegionEndpoint.APSoutheast1 ), "Test", "Test" );
 
 
 
