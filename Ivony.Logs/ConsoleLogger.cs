@@ -39,11 +39,14 @@ namespace Ivony.Logs
 
         SetColor( entry );
 
-        foreach ( var line in contents )
-          Console.WriteLine( line );
+
+        Console.Write( string.Join( Environment.NewLine, contents ) );
 
         Console.ForegroundColor = foreColor;
         Console.BackgroundColor = backColor;
+
+        Console.WriteLine();
+
 
       }
     }

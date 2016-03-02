@@ -17,8 +17,11 @@ namespace TestConsole
     static void Main( string[] args )
     {
 
+
+      var client = new AmazonCloudWatchLogsClient();
+
       var logger = new ConsoleLogger() + new TextFileLogger( @"C:\Temp\Logs\1.log" ) + new TextFileLogger( new DirectoryInfo( @"C:\Temp\Logs\Test" ) )
-        + new CloudWatchLogger( new AmazonCloudWatchLogsClient( "AKIAIT5TCZWUB6ROTUQQ", "0HjXbLn4d6wPr0Y4Nu0xNxc2M9A3dwjLY0y8gJji", RegionEndpoint.APSoutheast1 ), "Test", "Test" );
+        + CloudWatchLogger.AppendStream( client, "Test", "Test" );
 
 
 
