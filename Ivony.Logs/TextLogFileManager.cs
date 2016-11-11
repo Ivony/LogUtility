@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Collections.Concurrent;
 
 namespace Ivony.Logs
 {
@@ -14,8 +15,7 @@ namespace Ivony.Logs
   {
 
 
-    private static object _sync;
-    private static SynchronizedFileStreamCollection _collection;
+    private static ConcurrentDictionary<string, TextFileWriter> _collection = new ConcurrentDictionary<string, TextFileWriter>( StringComparer.OrdinalIgnoreCase );
 
 
     private static bool _autoFlush = true;
@@ -28,23 +28,13 @@ namespace Ivony.Logs
       get { return _autoFlush; }
       set
       {
-        lock ( _sync )
-        {
-          _autoFlush = value;
+        _autoFlush = value;
 
-          if ( value )
-            Flush();
-        }
+        if ( value )
+          Flush();
       }
     }
 
-
-    static TextLogFileManager()
-    {
-      _sync = new object();
-      _collection = new SynchronizedFileStreamCollection( _sync );
-
-    }
 
 
     /// <summary>
@@ -58,34 +48,28 @@ namespace Ivony.Logs
     {
       encoding = encoding ?? DefaultEncoding;
 
-      var stream = GetFileStream( filepath );
+      var stream = GetWriter( filepath, encoding );
       WriteText( stream, content, encoding, flush );
     }
 
 
 
 
-    private static SynchronizedFileStream GetFileStream( string filepath )
+    private static TextFileWriter GetWriter( string filepath, Encoding encoding )
     {
-      lock ( _sync )
-      {
-        if ( _collection.Contains( filepath ) )
-          return _collection[filepath];
+      var writer = _collection.GetOrAdd( filepath, new TextFileWriter( filepath, encoding ) );
 
-        else
-        {
-          Directory.CreateDirectory( Path.GetDirectoryName( filepath ) );
-          var stream = new SynchronizedFileStream( filepath );
-          _collection.Add( stream );
-          return stream;
-        }
-      }
+
+      if ( writer.Encoding.Equals( encoding ) == false )
+        throw new InvalidOperationException( "file encoding is not compatible" );
+
+      return writer;
     }
 
 
-    private static void WriteText( SynchronizedFileStream stream, string content, Encoding encoding, bool flush )
+    private static void WriteText( TextFileWriter stream, string content, Encoding encoding, bool flush )
     {
-      stream.WriteText( content, encoding, AutoFlush || flush );
+      stream.WriteText( content, AutoFlush || flush );
     }
 
 
@@ -94,39 +78,23 @@ namespace Ivony.Logs
     /// </summary>
     public static void Flush()
     {
-      lock ( _sync )
+
+      foreach ( var writer in _collection.Values )
       {
-
-        foreach ( var stream in _collection )
-        {
-          lock ( stream.SyncRoot )
-          {
-            stream.Flush();
-          }
-        }
-
+        writer.Flush();
       }
+
     }
 
-
-
     /// <summary>
-    /// 关闭指定路径的文件，将所有修改写入磁盘。
+    /// 刷新指定日志文本流，确保所有修改已经写入。
     /// </summary>
-    /// <param name="filepath">文件路径</param>
-    public static void Close( string filepath )
+    public static void Flush( string filepath )
     {
-      lock ( _sync )
-      {
 
-        if ( _collection.Contains( filepath ) )
-        {
-          var item = _collection[filepath];
-          item.Dispose();
-          _collection.Remove( filepath );
-        }
-
-      }
+      TextFileWriter writer;
+      if ( _collection.TryGetValue( filepath, out writer ) )
+        writer.Flush();
     }
 
 
@@ -141,103 +109,6 @@ namespace Ivony.Logs
 
 
 
-    private sealed class SynchronizedFileStream : IDisposable
-    {
-      public SynchronizedFileStream( string filepath )
-      {
-        Filepath = filepath;
-        SyncRoot = new object();
-      }
-
-      public string Filepath { get; private set; }
-
-      public object SyncRoot { get; private set; }
-
-
-
-      private StreamWriter writer;
-
-      public void WriteText( string text, Encoding encoding, bool flush )
-      {
-
-        lock ( SyncRoot )
-        {
-
-          if ( writer != null && writer.Encoding.Equals( encoding ) == false )
-          {
-            DisposeWriter();
-          }
-
-          if ( writer == null )
-            writer = new StreamWriter( OpenFile( Filepath ), encoding );
-
-
-          lock ( SyncRoot )
-          {
-            try
-            {
-              writer.Write( text );
-
-            }
-            finally
-            {
-              if ( flush )
-              {
-                DisposeWriter();
-              }
-
-            }
-          }
-        }
-      }
-
-      private void DisposeWriter()
-      {
-        writer.Dispose();
-        writer = null;
-      }
-
-
-
-      private static FileStream OpenFile( string filepath )
-      {
-        return File.Open( filepath, FileMode.Append, FileAccess.Write, FileShare.Read );
-      }
-
-
-      public void Flush()
-      {
-        lock ( SyncRoot )
-        {
-          if ( writer != null )
-          {
-            DisposeWriter();
-          }
-        }
-      }
-
-
-      public void Dispose()
-      {
-        DisposeWriter();
-        Filepath = null;
-      }
-    }
-
-
-    private sealed class SynchronizedFileStreamCollection : SynchronizedKeyedCollection<string, SynchronizedFileStream>
-    {
-
-      public SynchronizedFileStreamCollection( object syncRoot ) : base( syncRoot, StringComparer.OrdinalIgnoreCase ) { }
-
-
-
-
-      protected override string GetKeyForItem( SynchronizedFileStream item )
-      {
-        return item.Filepath;
-      }
-    }
 
   }
 }

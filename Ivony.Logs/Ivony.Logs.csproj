@@ -68,6 +68,7 @@
     <Compile Include="MulticastLogger.cs" />
     <Compile Include="TextFileLoggerBase.cs" />
     <Compile Include="TextLogFileManager.cs" />
+    <Compile Include="TextFileWriter.cs" />
     <Compile Include="TextLogger.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
