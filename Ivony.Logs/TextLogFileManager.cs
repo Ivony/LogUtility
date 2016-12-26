@@ -48,8 +48,8 @@ namespace Ivony.Logs
     {
       encoding = encoding ?? DefaultEncoding;
 
-      var stream = GetWriter( filepath, encoding );
-      WriteText( stream, content, encoding, flush );
+      var writer = GetWriter( filepath, encoding );
+      writer.WriteText( content, AutoFlush || flush );
     }
 
 
@@ -66,11 +66,6 @@ namespace Ivony.Logs
       return writer;
     }
 
-
-    private static void WriteText( TextFileWriter stream, string content, Encoding encoding, bool flush )
-    {
-      stream.WriteText( content, AutoFlush || flush );
-    }
 
 
     /// <summary>

@@ -15,10 +15,6 @@ namespace Ivony.Logs
   internal sealed class TextFileWriter : IDisposable
   {
 
-    private Encoding encoding;
-
-
-
     /// <summary>
     /// 创建 TextLogFileWriter 对象
     /// </summary>
@@ -122,7 +118,7 @@ namespace Ivony.Logs
         var list = cache;
         cache = new ConcurrentBag<string>();
 
-        File.AppendAllLines( Filepath, cache );
+        File.AppendAllLines( Filepath, list );
       }
     }
 
