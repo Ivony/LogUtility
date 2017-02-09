@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+#if !NETSTANDARD1_6
 using System.Runtime.Remoting.Messaging;
+#endif
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Ivony.Logs
@@ -48,24 +51,34 @@ namespace Ivony.Logs
     }
 
 
-
-    private static readonly string logScopeContextName = "log-scope";
+#if NETSTANDARD1_6
+    private static readonly AsyncLocal<LogScope> slot = new AsyncLocal<LogScope>() { Value = _root };
 
     /// <summary>
     /// 获取当前范畴对象
     /// </summary>
     public static LogScope CurrentScope
     {
-      get { return CallContext.LogicalGetData( logScopeContextName ) as LogScope ?? RootScope; }
-      private set
-      {
-        if ( value == null || value == RootScope )
-          CallContext.FreeNamedDataSlot( logScopeContextName );
-        else
-          CallContext.LogicalSetData( logScopeContextName, value );
-      }
+      get { return slot.Value = slot.Value ?? RootScope; }
+      private set { slot.Value = value ?? RootScope; }
     }
-
+#else
+    private static readonly string logScopeContextName = "log-scope";
+    /// <summary>
+    /// 获取当前范畴对象
+    /// </summary>
+    public static LogScope CurrentScope
+    {
+        get { return CallContext.LogicalGetData(logScopeContextName) as LogScope ?? RootScope; }
+        private set
+        {
+            if (value == null || value == RootScope)
+                CallContext.FreeNamedDataSlot(logScopeContextName);
+            else
+                CallContext.LogicalSetData(logScopeContextName, value);
+        }
+    }
+#endif
 
     private static LogScope _root = new LogScope();
 
