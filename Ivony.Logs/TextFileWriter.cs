@@ -129,19 +129,4 @@ namespace Ivony.Logs
       Filepath = null;
     }
   }
-
-
-  internal sealed class TextLogFileWriterCollection : SynchronizedKeyedCollection<string, TextFileWriter>
-  {
-
-    public TextLogFileWriterCollection( object syncRoot ) : base( syncRoot, StringComparer.OrdinalIgnoreCase ) { }
-
-
-
-
-    protected override string GetKeyForItem( TextFileWriter item )
-    {
-      return item.Filepath;
-    }
-  }
 }
