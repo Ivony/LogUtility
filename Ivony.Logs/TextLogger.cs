@@ -130,21 +130,17 @@ namespace Ivony.Logs
     /// <returns>转换后的时间</returns>
     protected DateTime GetDateTime( LogEntry entry )
     {
-#if NETSTANDARD1_6
-            return TimeZoneInfo.ConvertTime(entry.LogDate, TimeZone);
-#else
-            return TimeZoneInfo.ConvertTimeFromUtc( entry.LogDate, TimeZone );
-#endif
-        }
+      return TimeZoneInfo.ConvertTimeFromUtc( entry.LogDate, TimeZone );
+    }
 
 
 
-        /// <summary>
-        /// 获取日志消息的类型前缀，将会自动添加在每一行消息以标识这个消息的类型
-        /// </summary>
-        /// <param name="type">当前要记录的日志</param>
-        /// <returns>当前日志消息的前缀</returns>
-        protected virtual string GetTypePrefix( LogType type )
+    /// <summary>
+    /// 获取日志消息的类型前缀，将会自动添加在每一行消息以标识这个消息的类型
+    /// </summary>
+    /// <param name="type">当前要记录的日志</param>
+    /// <returns>当前日志消息的前缀</returns>
+    protected virtual string GetTypePrefix( LogType type )
     {
 
       if ( type == null || type.Serverity == 0 )
