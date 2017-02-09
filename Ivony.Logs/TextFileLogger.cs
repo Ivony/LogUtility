@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 
 namespace Ivony.Logs
@@ -22,7 +23,7 @@ namespace Ivony.Logs
     private TextFileLogger( LogFilter filter, Encoding encoding )
       : base( filter, encoding )
     {
-      basePath = AppDomain.CurrentDomain.SetupInformation.ApplicationBase;
+      basePath = System.IO.Directory.GetCurrentDirectory();
     }
 
     /// <summary>
